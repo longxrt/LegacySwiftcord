@@ -1082,7 +1082,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftcord/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO; /* ad-hoc signed builds cannot load third-party frameworks under the hardened runtime */
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1246,7 +1246,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftcord/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO; /* ad-hoc signed builds cannot load third-party frameworks under the hardened runtime */
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1282,7 +1282,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftcord/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO; /* ad-hoc signed builds cannot load third-party frameworks under the hardened runtime */
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
