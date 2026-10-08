@@ -84,10 +84,6 @@ struct CurrentUserFooter: View {
 		HStack(spacing: 14) {
 			Button {
 				userPopoverPresented = true
-				AnalyticsWrapper.event(type: .openPopout, properties: [
-					"type": "User Status Menu",
-					"other_user_id": user.id
-				])
 			} label: {
 				HStack(spacing: 8) {
 					AvatarWithPresence(
@@ -172,7 +168,6 @@ struct CurrentUserFooter: View {
 
 						Button {
 							switcherPresented = true
-							AnalyticsWrapper.event(type: .impressionAccountSwitcher)
 						} label: {
 							Label("Switch Accounts", systemImage: "arrow.left.arrow.right")
 								.frame(maxWidth: .infinity, alignment: .leading)

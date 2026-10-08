@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Sentry
 import DiscordKit
 import DiscordKitCore
 
@@ -47,8 +46,7 @@ struct DebugSettingsView: View {
 		}
 		Section("settings.others.debug.actions") {
 			Button("settings.others.debug.actions.crash", role: .destructive) {
-				SentrySDK.close()
-				SentrySDK.crash()
+				fatalError("Debug crash triggered from settings")
 			}
 			.buttonStyle(FlatButtonStyle())
 			.controlSize(.small)

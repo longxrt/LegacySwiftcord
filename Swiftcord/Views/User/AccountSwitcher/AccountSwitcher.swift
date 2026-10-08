@@ -9,7 +9,6 @@ import SwiftUI
 import DiscordKitCore
 import DiscordKit
 import os
-import Sentry
 
 public class AccountSwitcher: NSObject, ObservableObject {
 	@Published var accounts: [AccountMeta] = []
@@ -104,8 +103,6 @@ public class AccountSwitcher: NSObject, ObservableObject {
 		tempAPI.setToken(token: token)
 		try? await tempAPI.logOut()
 
-		// Clear the current user in the Sentry SDK
-		SentrySDK.setUser(nil)
 	}
 	/// Mark the current user as invalid - i.e. remove it from the token store and acc
 	///
@@ -215,8 +212,6 @@ public class AccountSwitcher: NSObject, ObservableObject {
 		}
 		accounts.insert(accounts.remove(at: accounts.firstIndex { $0.id == user.id } ?? 0), at: 0)
 
-		// Set Sentry user ID in the SDK to link bugs with user reports
-		SentrySDK.setUser(.init(userId: user.id))
 	}
 
 	override init() {

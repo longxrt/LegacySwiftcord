@@ -41,17 +41,6 @@ struct MiscSettingsView: View {
 				} */
             }
 			.listStyle(SidebarListStyle())
-			.onAppear {
-				AnalyticsWrapper.event(type: .settingsPaneViewed, properties: [
-					"origin_pane": selectedLink?.rawValue ?? ""
-				])
-			}
-			.onChange(of: selectedLink) { [selectedLink] newSelection in
-				AnalyticsWrapper.event(type: .settingsPaneViewed, properties: [
-					"destination_pane": newSelection?.rawValue ?? "",
-					"origin_pane": selectedLink?.rawValue ?? ""
-				])
-			}
         }
     }
 }

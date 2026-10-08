@@ -1,30 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "appcenter-sdk-apple",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/microsoft/appcenter-sdk-apple",
-      "state" : {
-        "branch" : "develop",
-        "revision" : "0156f967b87b6a67104318baa665776b35be0830"
-      }
-    },
-    {
       "identity" : "bitbytedata",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tsolomko/BitByteData",
       "state" : {
         "revision" : "36df26fe4586b4f23d76cfd8b47076998343a2b2",
         "version" : "2.0.3"
-      }
-    },
-    {
-      "identity" : "discordkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftcordApp/DiscordKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "2d42c69cafe592300a1a9d3a307bf485294026c7"
       }
     },
     {
@@ -46,39 +28,12 @@
       }
     },
     {
-      "identity" : "plcrashreporter",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/microsoft/PLCrashReporter.git",
-      "state" : {
-        "revision" : "1aed8f7dc79ce8e674c61e430ef51ca3db18cea9",
-        "version" : "1.11.1"
-      }
-    },
-    {
       "identity" : "reachability.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ashleymills/Reachability.swift",
       "state" : {
         "revision" : "c01bbdf2d633cf049ae1ed1a68a2020a8bda32e2",
         "version" : "5.1.0"
-      }
-    },
-    {
-      "identity" : "sentry-cocoa",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/getsentry/sentry-cocoa.git",
-      "state" : {
-        "revision" : "cf43eac1aa12017868c257ad3854ad87a5de0758",
-        "version" : "7.31.5"
-      }
-    },
-    {
-      "identity" : "sparkle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sparkle-project/Sparkle",
-      "state" : {
-        "revision" : "f0ceaf5cc9f3f23daa0ccb6dcebd79fc96ccc7d9",
-        "version" : "2.5.0"
       }
     },
     {

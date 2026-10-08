@@ -71,19 +71,10 @@ struct ServerView: View {
 		loadChannels()
 		// Sending malformed IDs causes an instant Gateway session termination
         guard !guild.properties.isDMChannel else {
-			AnalyticsWrapper.event(type: .DMListViewed, properties: [
-				"channel_id": serverCtx.channel?.id ?? "",
-				"channel_type": serverCtx.channel?.type.rawValue ?? 1
-			])
             serverCtx.basePermissions = .all
 			return
 		}
 
-		AnalyticsWrapper.event(type: .guildViewed, properties: [
-			"guild_id": guild.id,
-            "guild_is_vip": guild.premium_subscription_count > 0,
-			"guild_num_channels": guild.channels.count
-		])
 
 		// Subscribe to typing events
 		gateway.subscribeGuildEvents(id: guild.id)

@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct AboutSwiftcordView: View {
-	@EnvironmentObject var updaterViewModel: UpdaterViewModel
-
     var body: some View {
 		Section {
 			// IMO its better to just crash if these are missing in the info dict.
@@ -37,9 +35,6 @@ struct AboutSwiftcordView: View {
 			.frame(maxWidth: .infinity)
 			.padding(.top, 8)
 			.padding(.bottom, 16)
-		} footer: {
-			Button("Check for Updates…", action: updaterViewModel.checkForUpdates)
-				.disabled(!updaterViewModel.canCheckForUpdates)
 		}
 
 		Section {

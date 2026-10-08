@@ -7,35 +7,12 @@
 
 import Foundation
 import AppKit
-import AppCenter
-import AppCenterAnalytics
-import Sentry
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         populateUserDefaults()
         setupURLCache()
         clearOldCache()
-
-        #if DEBUG
-        AppCenter.logLevel = .debug
-        #endif
-
-        if BuildSettings.appcenterAppSecret.isEmpty == false {
-            // Start AppCenter if we have a valid app secret
-            AppCenter.start(withAppSecret: BuildSettings.appcenterAppSecret, services: [
-                Analytics.self
-            ])
-            Analytics.enabled = UserDefaults.standard.bool(forKey: "local.analytics")
-        }
-
-        #if !DEBUG
-        SentrySDK.start { options in
-            options.dsn = "https://e7d39f98a63347c18b9f71d3aee6a4d3@o1377212.ingest.sentry.io/6687560"
-            options.tracesSampleRate = 0.5
-            options.enableAppHangTracking = true
-        }
-        #endif
 
         // Disable tabbing (fixes #114)
         NSWindow.allowsAutomaticWindowTabbing = false
@@ -52,7 +29,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 private extension AppDelegate {
     func populateUserDefaults() {
         UserDefaults.standard.register(defaults: [
-            "local.analytics": true,
             "local.seenOnboarding": false
         ])
     }

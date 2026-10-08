@@ -100,13 +100,6 @@ struct MessageStickerView: View {
 	@State public var packPresenting = false
 	@State private var fullStickerPack: StickerPack?
 
-	private func openPopoverEvt() {
-		AnalyticsWrapper.event(type: .openPopout, properties: [
-			"type": "Sticker Popout",
-			"sticker_pack_id": fullSticker?.pack_id ?? "",
-			"sticker_id": fullSticker?.id ?? ""
-		])
-	}
 	private func loadStickerPack() async -> StickerPack? {
 		guard let stickerPacks: [StickerPack] = try? await restAPI.listNitroStickerPacks() else {return nil}
 		for pack in stickerPacks where pack.id == fullSticker!.pack_id {
@@ -118,12 +111,9 @@ struct MessageStickerView: View {
 	var body: some View {
 		Button {
 			if fullSticker == nil {
-			Task {
-				fullSticker = try await restAPI.getSticker(sticker.id)
-					openPopoverEvt()
+				Task {
+					fullSticker = try await restAPI.getSticker(sticker.id)
 				}
-			} else {
-				openPopoverEvt()
 			}
 			infoShow.toggle()
 			packPresenting = false

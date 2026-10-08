@@ -108,13 +108,11 @@ struct CreditsView: View {
 				HStack(spacing: 16) {
 					Button {
 						openURL(URL(string: "https://github.com/sponsors/cryptoAlgorithm")!)
-						AnalyticsWrapper.event(type: .supporterCTAClick, properties: ["type": "github"])
 					} label: {
 						Text("settings.others.credits.sponsor.gh")
 					}.buttonStyle(FlatButtonStyle(customBase: .white))
 					Button {
 						openURL(URL(string: "https://patreon.com/cryptoAlgo")!)
-						AnalyticsWrapper.event(type: .supporterCTAClick, properties: ["type": "patreon"])
 					} label: {
 						Text("settings.others.credits.sponsor.patreon")
 					}.buttonStyle(FlatButtonStyle(customBase: .white))

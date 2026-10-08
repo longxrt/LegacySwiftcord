@@ -48,10 +48,6 @@ struct UserAvatarView: View {
 			}
 
 			infoPresenting.toggle()
-			AnalyticsWrapper.event(type: .openPopout, properties: [
-				"type": "Profile Popout",
-				"other_user_id": user.id
-			])
 
 			if let guildID = guildID, guildID != "@me" {
 				gateway.requestPresence(id: guildID, memberID: user.id)

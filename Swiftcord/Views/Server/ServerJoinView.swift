@@ -21,35 +21,12 @@ struct ServerJoinView: View {
         }
 
         let id = invite.split(separator: "/").last!
-        AnalyticsWrapper.event(type: .inviteOpened, properties: ["invite_code": id])
         let resolvedInvite = try? await restAPI.resolveInvite(inviteID: String(id), inputValue: invite)
-        AnalyticsWrapper.event(type: .networkInviteResolve, properties: [
-            "code": id,
-            "input_value": invite,
-            "location": "Join Guild"
-        ])
 
         guard let resolvedInvite = resolvedInvite else {
             withAnimation { error = "server.join.fieldHeader.notFound" }
-            AnalyticsWrapper.event(type: .resolveInvite, properties: [
-                "input_value": invite,
-                "invite_type": "Server Invite",
-                "location": "Join Guild",
-                "code": id,
-                "resolved": false
-            ])
             return
         }
-        AnalyticsWrapper.event(type: .resolveInvite, properties: [
-            "input_value": invite,
-            "invite_type": "Server Invite",
-            "inviter_id": resolvedInvite.inviter?.id,
-            "location": "Join Guild",
-            "code": id,
-            "resolved": true,
-            "size_online": resolvedInvite.approximate_presence_count,
-            "size_total": resolvedInvite.approximate_member_count
-        ])
         print(resolvedInvite)
         withAnimation { error = nil }
     }
@@ -57,9 +34,7 @@ struct ServerJoinView: View {
     var body: some View {
         DialogView(
             title: "server.join.title",
-            description: "server.join.caption",
-            analyticsType: "Join Guild",
-            analyticsFrom: "Guild List"
+            description: "server.join.caption"
         ) { // swiftlint:disable:this vertical_parameter_alignment_on_call
             Button { presented = false } label: {
                 Text("action.close")
