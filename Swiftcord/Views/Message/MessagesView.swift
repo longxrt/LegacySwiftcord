@@ -8,7 +8,7 @@
 import SwiftUI
 import DiscordKit
 import DiscordKitCore
-import CachedAsyncImage
+import SDWebImageSwiftUI
 import Introspect
 import Combine
 

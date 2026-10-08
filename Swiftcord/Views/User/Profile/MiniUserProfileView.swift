@@ -8,7 +8,7 @@
 import SwiftUI
 import DiscordKit
 import DiscordKitCore
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 struct MiniUserProfileView<RichContentSlot: View>: View {
 	let user: User
@@ -36,7 +36,7 @@ struct MiniUserProfileView<RichContentSlot: View>: View {
 					if url.isAnimatable {
 						AnimatedImageView(url: url.modifyingPathExtension("gif"))
 					} else {
-						CachedAsyncImage(url: url) { image in
+						WebImage(url: url) { image in
 							image.resizable().scaledToFill()
 						} placeholder: { Rectangle().fill(Color(hex: user.accent_color ?? 0)) }
 					}
@@ -48,7 +48,7 @@ struct MiniUserProfileView<RichContentSlot: View>: View {
 					.frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
 					.clipShape(ProfileAccentMask(insetStart: 14, insetWidth: 92))
 			} else {
-				CachedAsyncImage(url: avatarURL) { image in
+				WebImage(url: avatarURL) { image in
 					image.resizable().scaledToFill()
 				} placeholder: { EmptyView() }
 					.frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)

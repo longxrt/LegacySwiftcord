@@ -7,7 +7,7 @@
 
 import SwiftUI
 import DiscordKitCore
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 struct UserSettingsAccount: View {
 	let user: CurrentUser
@@ -39,7 +39,7 @@ struct UserSettingsAccount: View {
 
 	var body: some View {
 		VStack {
-            CachedAsyncImage(url: user.avatarURL(size: 240)) { image in
+            WebImage(url: user.avatarURL(size: 240)) { image in
                 image.resizable().scaledToFill()
             } placeholder: {
                 ProgressView().progressViewStyle(.circular)

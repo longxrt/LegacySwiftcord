@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 import DiscordKitCore
 import DiscordKit
 import os

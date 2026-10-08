@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 import DiscordKitCore
 import DiscordKit
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 struct StickerPackView: View {
 	let pack: StickerPack
@@ -20,7 +20,7 @@ struct StickerPackView: View {
 
 	@ViewBuilder private var banner: some View {
 		if let bannerURL {
-			CachedAsyncImage(url: bannerURL) { image in
+			WebImage(url: bannerURL) { image in
 				image.resizable().scaledToFill()
 			} placeholder: {
 				ProgressView().progressViewStyle(.circular)

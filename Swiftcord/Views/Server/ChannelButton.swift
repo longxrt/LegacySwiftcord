@@ -8,7 +8,7 @@
 import SwiftUI
 import DiscordKitCore
 import DiscordKit
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 struct ChannelButton: View, Equatable {
 	static func == (lhs: ChannelButton, rhs: ChannelButton) -> Bool {

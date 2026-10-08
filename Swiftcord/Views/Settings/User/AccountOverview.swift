@@ -7,7 +7,7 @@
 
 import SwiftUI
 import DiscordKitCore
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 @available(macOS 13.0, *)
 struct AccountOverview: View {
@@ -26,7 +26,7 @@ struct AccountOverview: View {
 			}
 		} header: {
 			VStack(spacing: 0) {
-				CachedAsyncImage(url: user.avatarURL(size: 240)) { image in
+				WebImage(url: user.avatarURL(size: 240)) { image in
 					image.resizable().scaledToFill()
 				} placeholder: {
 					ProgressView().progressViewStyle(.circular)

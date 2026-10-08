@@ -6,7 +6,7 @@
 //
 import SwiftUI
 import Lottie
-import CachedAsyncImage
+import SDWebImageSwiftUI
 import DiscordKitCore
 import DiscordKit
 
@@ -97,7 +97,7 @@ struct StickerItemView: View {
 				}
 			default:
 				// Well it doesn't animate for some reason
-				CachedAsyncImage(url: URL(string: "\(DiscordKitConfig.default.cdnURL)stickers/\(sticker.id).png?passthrough=true")!) { phase in
+				WebImage(url: URL(string: "\(DiscordKitConfig.default.cdnURL)stickers/\(sticker.id).png?passthrough=true")!) { phase in
 					switch phase {
 					case .empty: StickerLoadingView(size: size)
 					case .success(let image): image.resizable().scaledToFill()

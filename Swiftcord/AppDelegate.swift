@@ -7,6 +7,7 @@
 
 import Foundation
 import AppKit
+import SDWebImage
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -47,11 +48,18 @@ private extension AppDelegate {
             }
         }
         print("Cache path: \(cachePath)")*/
+        // Images are cached by SDWebImage now; URLCache only holds API responses
         URLCache.shared = URLCache(
-            memoryCapacity: 32 * 1024 * 1024,  // 32MB
-            diskCapacity: 256 * 1024 * 1024, // 256MB
+            memoryCapacity: 8 * 1024 * 1024,  // 8MB
+            diskCapacity: 64 * 1024 * 1024, // 64MB
             diskPath: nil
         )
+
+        // Bound SDWebImage's caches (by default the memory cache is unbounded)
+        let imageCache = SDImageCache.shared.config
+        imageCache.maxMemoryCost = 96 * 1024 * 1024 // 96MB of decoded images
+        imageCache.maxDiskSize = 384 * 1024 * 1024 // 384MB
+        imageCache.maxDiskAge = 7 * 24 * 60 * 60 // 1 week
     }
 
     // Remove cached files older than the specified number of hours

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 import DiscordKitCore
 
 struct RichEmbedView: View {
@@ -55,7 +55,7 @@ struct RichEmbedView: View {
 						if let iconURL = author.icon_url {
 							let width = 24.0
 							let height = 24.0
-							CachedAsyncImage(url: URL(string: iconURL)) { phase in
+							WebImage(url: URL(string: iconURL)) { phase in
 								if let image = phase.image { image.resizable().scaledToFill() } else {
 									Spacer().frame(width: width, height: height)
 								}
@@ -147,7 +147,7 @@ struct RichEmbedView: View {
 						if let iconURL = footer.icon_url {
 							let width = 20.0
 							let height = 20.0
-							CachedAsyncImage(url: URL(string: iconURL)) { phase in
+							WebImage(url: URL(string: iconURL)) { phase in
 								if let image = phase.image {
 									image.resizable().scaledToFill()
 								} else {

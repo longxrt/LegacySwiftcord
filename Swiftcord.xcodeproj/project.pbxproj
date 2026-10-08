@@ -132,7 +132,6 @@
 		DAFD4713289A202F0075D71B /* AttachmentProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD4712289A202F0075D71B /* AttachmentProgress.swift */; };
 		DAFD4716289A208F0075D71B /* AttachmentGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD4715289A208F0075D71B /* AttachmentGif.swift */; };
 		DAFD4719289A21E80075D71B /* AttachmentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD4718289A21E80075D71B /* AttachmentVideo.swift */; };
-		DAFF8A7828C9DF6F0016AE8C /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = DAFF8A7728C9DF6F0016AE8C /* CachedAsyncImage */; };
 		E7AF1C27282FA3ED001F78DF /* Array.Channel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AF1C26282FA3ED001F78DF /* Array.Channel+.swift */; };
 		E7AF1C29282FA3F7001F78DF /* Channel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AF1C28282FA3F7001F78DF /* Channel+.swift */; };
 		E7AF1C2B282FA400001F78DF /* Guild+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AF1C2A282FA400001F78DF /* Guild+.swift */; };
@@ -299,7 +298,6 @@
 				36367146283C1B6500A5CBE6 /* AVKit.framework in Frameworks */,
 				DA296D90299CF2AC000A810E /* DiscordKit in Frameworks */,
 				DA296D92299CF2AC000A810E /* DiscordKitCore in Frameworks */,
-				DAFF8A7828C9DF6F0016AE8C /* CachedAsyncImage in Frameworks */,
 				DA12FB7C29AB84F500EDBBEE /* Lottie in Frameworks */,
 				DA8AEA6829029747007BAAEA /* Introspect in Frameworks */,
 			);
@@ -756,7 +754,6 @@
 			packageProductDependencies = (
 				FB692B4C6C8962FEDD0EEF6A /* SDWebImageSwiftUI */,
 				069DEBC7907DC85E47A867B6 /* SDWebImage */,
-				DAFF8A7728C9DF6F0016AE8C /* CachedAsyncImage */,
 				DA8AEA6729029747007BAAEA /* Introspect */,
 				DA296D8F299CF2AC000A810E /* DiscordKit */,
 				DA296D91299CF2AC000A810E /* DiscordKitCore */,
@@ -806,7 +803,6 @@
 			packageReferences = (
 				AFF6F4AFABDB7DDA95116F3D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				C449C2DDFCDD38A0E2B1741A /* XCRemoteSwiftPackageReference "SDWebImage" */,
-				DAB1E46D28A202B900645FCD /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				DA8AEA6629029747007BAAEA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				DA63C8D029834E4C00B34D60 /* XCLocalSwiftPackageReference "../DiscordKit" */,
 				DA12FB7A29AB84F500EDBBEE /* XCRemoteSwiftPackageReference "lottie-spm" */,
@@ -1372,14 +1368,6 @@
 				minimumVersion = 0.2.0;
 			};
 		};
-		DAB1E46D28A202B900645FCD /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1412,11 +1400,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DA8AEA6629029747007BAAEA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		DAFF8A7728C9DF6F0016AE8C /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DAB1E46D28A202B900645FCD /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 

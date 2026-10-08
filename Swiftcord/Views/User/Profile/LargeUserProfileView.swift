@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 import DiscordKitCore
 
 struct LargeUserProfile<Content: View>: View {
@@ -24,7 +24,7 @@ struct LargeUserProfile<Content: View>: View {
                     .frame(maxWidth: .infinity, minHeight: 120, maxHeight: 120)
 					.clipShape(ProfileAccentMask(insetStart: 16, insetWidth: 136))
             } else {
-                CachedAsyncImage(url: avatarURL) { image in
+                WebImage(url: avatarURL) { image in
                     image.resizable().scaledToFill()
                 } placeholder: { ProgressView().progressViewStyle(.circular)}
                 .frame(maxWidth: .infinity, minHeight: 120, maxHeight: 120)
@@ -33,7 +33,7 @@ struct LargeUserProfile<Content: View>: View {
 				.clipShape(ProfileAccentMask(insetStart: 16, insetWidth: 136))
             }
             HStack(alignment: .bottom, spacing: 12) {
-				CachedAsyncImage(url: avatarURL) { image in
+				WebImage(url: avatarURL) { image in
 					image.resizable().scaledToFill()
 				} placeholder: {
 					ProgressView().progressViewStyle(.circular)

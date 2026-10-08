@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 /*
  Font size of text in server button for servers without an icon

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 /// A much better base for remote images, has loading placeholders built in and sane default modifiers for the image
 struct BetterImageView<ErrorContent: View>: View {
@@ -15,7 +15,7 @@ struct BetterImageView<ErrorContent: View>: View {
     @ViewBuilder let customErrorView: () -> ErrorContent
 
     var body: some View {
-        CachedAsyncImage(url: url) { phase in
+        WebImage(url: url) { phase in
             if let image = phase.image {
                 imageModifier(image)
                     .resizable()

@@ -7,7 +7,7 @@
 //  This monstrosity is a view that renders one message
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 import DiscordKit
 import DiscordKitCore
 

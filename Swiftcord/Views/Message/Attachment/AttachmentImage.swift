@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 struct AttachmentImage: View {
 	let width: Double
@@ -15,7 +15,7 @@ struct AttachmentImage: View {
 	let url: URL
 
 	var body: some View {
-		CachedAsyncImage(url: url, scale: scale) { phase in
+		WebImage(url: url, scale: scale) { phase in
 			if let image = phase.image {
 				image
 					.resizable()

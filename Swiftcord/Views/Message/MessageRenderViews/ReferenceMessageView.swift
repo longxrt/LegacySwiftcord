@@ -7,7 +7,7 @@
 
 import SwiftUI
 import DiscordKitCore
-import CachedAsyncImage
+import SDWebImageSwiftUI
 
 /// For rendering replies
 struct ReferenceMessageView: View {
