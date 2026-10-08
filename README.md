@@ -1,7 +1,11 @@
 # Swiftcord Sequoia Edition
 
 A maintained fork of **legacy Swiftcord**, the open-source native SwiftUI Discord client for macOS,
-updated to run well on **macOS 14 Sonoma and macOS 15 Sequoia**.
+updated to run well on **macOS 14 Sonoma and macOS 15 Sequoia**. 
+
+As a person who wants to maximize on Performance and Efficiency, Swiftcord was the only option avaliable but it was outdated. The whole reason as to why this was released in the first place was because, personally I disliked the Liquid Glass design in Tahoe (26.0) where the v2 branch requires that specific version and above. While MacOS Golden Gate (27.0) is avaliable and improved upon 26, I still personally dont see myself enjoying it as much.
+
+Special thanks to Claude Code :)
 
 The official Swiftcord v2 requires macOS 26 Tahoe and isn't open source. This branch starts from
 the archived legacy codebase (v0.7.0, last updated November 2023) and modernizes it: it builds
@@ -114,13 +118,13 @@ not a formal benchmark against legacy.
 
 - **OLED Black theme** (Settings → App → Appearance): pure black backgrounds throughout, with
   near-black surfaces for raised elements.
-- **Activity Status** (Settings → App → Activity Status, off by default): show the game you're
-  playing and the music you're listening to on your profile.
+
   - Games are detected when apps launch or quit, from their app category or Discord's list of
     detectable games. No polling.
   - Apple Music and Spotify via their system notifications (no polling, no permissions).
   - Cider via its local RPC API, checked only while Cider is running. Optional API token stored in
     the Keychain.
+    
 - **Full user profiles**: "View Full Profile" from any profile card shows the banner, badges,
   pronouns, About Me, roles, connected accounts, a private note, and mutual servers and friends.
 
