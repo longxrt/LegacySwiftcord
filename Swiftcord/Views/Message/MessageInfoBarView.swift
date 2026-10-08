@@ -41,7 +41,7 @@ struct MessageInfoBarView: View {
 		.background(state?.color ?? .clear)
         .cornerRadius(8) // Visually match corner radius to message field
         .padding(.horizontal, 16) // Padding outside the background
-        .offset(y: isShown ? -48 : -24)
+        .offset(y: isShown ? -24 : 0) // Relative to the top of the composer; hidden behind it when not shown
 		.opacity(isShown ? 1 : 0)
         .animation(
             .interpolatingSpring(

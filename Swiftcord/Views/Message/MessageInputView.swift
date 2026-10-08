@@ -151,7 +151,9 @@ struct MessageInputView: View {
 		)
 		.cornerRadius(7)
         .padding(.horizontal, 16)
-        .offset(y: -24)
+        // Real padding rather than an offset, so the space the composer takes up matches where
+        // it's drawn and the history can inset itself by exactly that amount
+        .padding(.bottom, 24)
     }
 }
 

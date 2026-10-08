@@ -182,6 +182,9 @@ struct MessagesView: View {
     @State var composer = ComposerModel()
 
     @State private var messageInputHeight: CGFloat = 0
+    /// Whether the bottom of the history is on screen; new messages only scroll into view then
+    @State private var isAtBottom = true
+    private static let bottomMarkerID = "history-bottom"
 
     // Gateway
     @State private var evtID: EventDispatch.HandlerIdentifier?
@@ -265,33 +268,61 @@ struct MessagesView: View {
     // which broke hit testing on macOS 15 so avatars and other buttons in messages
     // couldn't be clicked.
     private var historyList: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 0) {
-                Spacer(minLength: 52) // Keep the top of history clear of the toolbar
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    Spacer(minLength: 52) // Keep the top of history clear of the toolbar
 
-                if viewModel.reachedTop {
-                    MessagesViewHeader(chl: ctx.channel)
-                } else {
-                    // Don't cancel the fetch when this scrolls away: switching channels rebuilds the
-                    // scroll view, and its disappear can land after the new channel's fetch started.
-                    // Fetches for a previous channel are cancelled by fetchMoreMessages() instead.
-                    loadingSkeleton
-                        .onAppear { if viewModel.fetchMessagesTask == nil { fetchMoreMessages() } }
+                    if viewModel.reachedTop {
+                        MessagesViewHeader(chl: ctx.channel)
+                    } else {
+                        // Don't cancel the fetch when this scrolls away: switching channels rebuilds the
+                        // scroll view, and its disappear can land after the new channel's fetch started.
+                        // Fetches for a previous channel are cancelled by fetchMoreMessages() instead.
+                        loadingSkeleton
+                            .onAppear { if viewModel.fetchMessagesTask == nil { fetchMoreMessages() } }
+                    }
+
+                    ForEach(historyEntries) { entry in
+                        historyItem(entry)
+                    }
+
+                    // Breathing room above the composer, plus room for the info bar drawn above it
+                    Spacer(minLength: 8 + (viewModel.showingInfoBar ? 24 : 0))
+
+                    // Marks the bottom of history; it's only on screen when scrolled to the end
+                    Color.clear
+                        .frame(height: 1)
+                        .id(Self.bottomMarkerID)
+                        .onAppear { isAtBottom = true }
+                        .onDisappear { isAtBottom = false }
                 }
-
-                ForEach(historyEntries) { entry in
-                    historyItem(entry)
-                }
-
-                Spacer(minLength: max(messageInputHeight - 44 - 7, 0) + (viewModel.showingInfoBar ? 24 : 0))
+                .padding(.horizontal, 10)
             }
-            .padding(.horizontal, 10)
+            // The scroll view doesn't follow content added at the bottom by itself, so new messages
+            // would land just below the visible area, behind the message box. Follow them when the
+            // user is already at the bottom (or sent the message), like Discord.
+            .onChange(of: viewModel.messages.first?.id) { _, _ in
+                let sentByMe = viewModel.messages.first?.author.id == gateway.cache.user?.id
+                guard isAtBottom || sentByMe else { return }
+                DispatchQueue.main.async {
+                    withAnimation(.easeOut(duration: 0.15)) { proxy.scrollTo(Self.bottomMarkerID, anchor: .bottom) }
+                }
+            }
+            // A taller composer (multi-line drafts, reply bar) shouldn't cover the last message either
+            .onChange(of: messageInputHeight) { _, _ in
+                guard isAtBottom else { return }
+                DispatchQueue.main.async { proxy.scrollTo(Self.bottomMarkerID, anchor: .bottom) }
+            }
+            .onChange(of: viewModel.showingInfoBar) { _, _ in
+                guard isAtBottom else { return }
+                DispatchQueue.main.async { proxy.scrollTo(Self.bottomMarkerID, anchor: .bottom) }
+            }
+            .id(ctx.channel?.id) // A fresh scroll view per channel, so each one opens at the newest message
+            .modifier(BottomAnchoredScroll())
+            .contentMargins(.top, 52, for: .scrollIndicators)
+            .frame(maxHeight: .infinity)
         }
-        .id(ctx.channel?.id) // A fresh scroll view per channel, so each one opens at the newest message
-        .modifier(BottomAnchoredScroll())
-        .contentMargins(.top, 52, for: .scrollIndicators)
-        .frame(maxHeight: .infinity)
-        .padding(.bottom, 24 + 7) // Ensure history doesn't go below text input field (and its border radius)
     }
 
     @ViewBuilder
@@ -357,12 +388,14 @@ struct MessagesView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            historyList
-            if let channel = ctx.channel {
-                inputContainer(channel: channel)
+        historyList
+            // The composer is a bottom inset, so the end of history always rests just above it
+            // (and grows with it), while older messages can still scroll underneath
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if let channel = ctx.channel {
+                    inputContainer(channel: channel)
+                }
             }
-        }
         // Blur the area behind the toolbar so the content doesn't show thru
         .safeAreaInset(edge: .top) {
             VStack {

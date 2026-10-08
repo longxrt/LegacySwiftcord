@@ -1,3 +1,4 @@
 xcuserdata/
 .devcontainer/
 dist/
+.DS_Store
