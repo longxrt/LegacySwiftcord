@@ -64,11 +64,9 @@ struct ContentView: View {
     }
 
     private var serverListItems: [ServerListItem] {
-        let unsortedGuilds = gateway.cache.guilds.values.filter { guild in
-            !gateway.guildFolders.contains { folder in
-                folder.guild_ids.contains(guild.id)
-            }
-        }
+        // Servers not in any folder; a set keeps this linear instead of servers × folders × folder size
+        let folderedIDs = Set(gateway.guildFolders.flatMap(\.guild_ids))
+        let unsortedGuilds = gateway.cache.guilds.values.filter { !folderedIDs.contains($0.id) }
         .sorted { lhs, rhs in (lhs.joined_at ?? .distantPast) > (rhs.joined_at ?? .distantPast) }
         .map { ServerListItem.guild($0) }
         return unsortedGuilds + gateway.guildFolders.compactMap { folder -> ServerListItem? in

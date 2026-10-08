@@ -21,13 +21,11 @@ import DiscordKitCore
 
 	@Published var reachedTop = false
 	@Published var messages: [Message] = []
-	@Published var newMessage = " "
 	@Published var attachments: [URL] = []
 	@Published var showingInfoBar = false
 	@Published var loadError = false
 	@Published var infoBarData: InfoBarData?
 	@Published var fetchMessagesTask: Task<(), Error>?
-	@Published var lastSentTyping = Date(timeIntervalSince1970: 0)
 	@Published var newAttachmentErr: NewAttachmentError?
 	@Published var replying: ReplyRef?
 	@Published var dropOver = false
@@ -55,4 +53,14 @@ import DiscordKitCore
 			}
 		}
 	}
+}
+
+/// Draft state for the message composer.
+///
+/// Kept separate from ``MessagesViewModel`` and only observed by the composer field,
+/// so typing re-renders the text box instead of the whole message history.
+@MainActor final class ComposerModel: ObservableObject {
+	@Published var text = ""
+	/// When a typing indicator was last sent; not published since nothing displays it
+	var lastSentTyping = Date.distantPast
 }

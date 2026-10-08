@@ -131,12 +131,42 @@ struct UnreadDivider: View {
     }
 }
 
+/// The message text field. It's the only view observing the composer, so keystrokes
+/// re-render just this field rather than the message history.
+private struct ComposerField: View {
+    @ObservedObject var composer: ComposerModel
+    let channelID: Snowflake
+    let placeholder: LocalizedStringKey
+    @Binding var attachments: [URL]
+    @Binding var replying: MessagesViewModel.ReplyRef?
+    let onSend: (String, [URL]) -> Void
+    let preAttach: (URL) -> Bool
+
+    var body: some View {
+        MessageInputView(
+            placeholder: placeholder,
+            message: $composer.text, attachments: $attachments, replying: $replying,
+            onSend: onSend,
+            preAttach: preAttach
+        )
+        .onChange(of: composer.text) { oldText, newText in
+            // Send a typing indicator at most once every 8s while the draft is growing
+            guard newText.count > oldText.count,
+                  Date().timeIntervalSince(composer.lastSentTyping) > 8 else { return }
+            composer.lastSentTyping = Date()
+            Task { _ = try? await restAPI.typingStart(id: channelID) }
+        }
+    }
+}
+
 struct MessagesView: View {
     @EnvironmentObject var gateway: DiscordGateway
     @EnvironmentObject var state: UIState
     @EnvironmentObject var ctx: ServerContext
 
     @StateObject var viewModel = MessagesViewModel()
+    // Held without observing it, so typing doesn't re-render this view (see ComposerField)
+    @State var composer = ComposerModel()
 
     @State private var messageInputHeight: CGFloat = 0
 
@@ -160,10 +190,11 @@ struct MessagesView: View {
         MessageView(
             message: msg,
             shrunk: shrunk,
-            quotedMsg: msg.message_reference != nil
-            ? viewModel.messages.first {
-                $0.id == msg.message_reference!.message_id
-            } : nil,
+            // Discord sends the replied-to message along with replies; only fall back to
+            // scanning loaded history (O(n) per cell) when it's missing
+            quotedMsg: msg.message_reference.flatMap { ref in
+                msg.referenced_message ?? viewModel.messages.first { $0.id == ref.message_id }
+            },
             onQuoteClick: { id in
                 // withAnimation { proxy.scrollTo(id, anchor: .center) }
                 viewModel.highlightMsg = id
@@ -258,7 +289,9 @@ struct MessagesView: View {
                 .contains(.sendMessages)
             }()
 
-            MessageInputView(
+            ComposerField(
+                composer: composer,
+                channelID: channel.id,
                 placeholder: hasSendPermission ?
                 (channel.type == .dm
                  ? "dm.composeMsg.hint \(channel.label(gateway.cache.users) ?? "")"
@@ -268,22 +301,12 @@ struct MessagesView: View {
                    )
                 )
                 : "You do not have permission to send messages in this channel.",
-                message: $viewModel.newMessage, attachments: $viewModel.attachments, replying: $viewModel.replying,
+                attachments: $viewModel.attachments, replying: $viewModel.replying,
                 onSend: sendMessage,
                 preAttach: preAttachChecks
             )
             .disabled(!hasSendPermission)
-            .onAppear { viewModel.newMessage = "" }
-            .onChange(of: viewModel.newMessage) { content in
-                if content.count > viewModel.newMessage.count,
-                   Date().timeIntervalSince(viewModel.lastSentTyping) > 8 { // swiftlint:disable:this indentation_width
-                    // Send typing start msg once every 8s while typing
-                    viewModel.lastSentTyping = Date()
-                    Task {
-                        _ = try? await restAPI.typingStart(id: channel.id)
-                    }
-                }
-            }
+            .onAppear { composer.text = "" }
             .overlay {
                 let typingMembers = ctx.typingStarted[channel.id]?
                     .map { $0.member?.nick ?? $0.member?.user?.displayName ?? "" } ?? []
@@ -366,7 +389,7 @@ struct MessagesView: View {
             fetchMoreMessages()
             viewModel.loadError = false
             viewModel.reachedTop = false
-            viewModel.lastSentTyping = Date(timeIntervalSince1970: 0)
+            composer.lastSentTyping = .distantPast
 
         }
         .onChange(of: state.loadingState) { loadingState in

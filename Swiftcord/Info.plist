@@ -4,5 +4,7 @@
 <dict>
 	<key>ATSApplicationFontsPath</key>
 	<string>.</string>
+	<key>NSSupportsSuddenTermination</key>
+	<true/>
 </dict>
 </plist>

@@ -56,26 +56,25 @@ internal extension MessagesView {
 	}
 
 	func sendMessage(with message: String, attachments: [URL]) {
-		viewModel.lastSentTyping = Date(timeIntervalSince1970: 0)
-		viewModel.newMessage = ""
+		// Capture the destination now; the user may switch channels before the request runs
+		guard let channelID = ctx.channel?.id else { return }
+		composer.lastSentTyping = .distantPast
+		composer.text = ""
 		viewModel.showingInfoBar = false
 
 		// Create message reference if neccessary
-		var reference: MessageReference? {
-			if let replying = viewModel.replying {
-				viewModel.replying = nil // Make sure to clear that
-				return MessageReference(message_id: replying.messageID, guild_id: replying.guildID.isDM ? nil : replying.guildID)
-			} else { return nil }
+		let replying = viewModel.replying
+		viewModel.replying = nil
+		let reference = replying.map {
+			MessageReference(message_id: $0.messageID, guild_id: $0.guildID.isDM ? nil : $0.guildID)
 		}
-		var allowedMentions: AllowedMentions? {
-			if let replying = viewModel.replying {
-				return AllowedMentions(parse: [.user, .role, .everyone], replied_user: replying.ping)
-			} else { return nil }
+		let allowedMentions = replying.map {
+			AllowedMentions(parse: [.user, .role, .everyone], replied_user: $0.ping)
 		}
 
 		// Workaround for some race condition, no idea why clearing the message immediately doesn't
 		// successfully clear it
-		DispatchQueue.main.async { viewModel.newMessage = "" }
+		DispatchQueue.main.async { composer.text = "" }
 
 		Task {
 			do {
@@ -93,7 +92,7 @@ internal extension MessagesView {
 							}
 					),
 					attachments: attachments,
-					id: ctx.channel!.id
+					id: channelID
 				)
 			} catch {
 				viewModel.showingInfoBar = true

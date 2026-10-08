@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88D916F93D4215B273AB3B29 /* AppActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB401C64BAEFC4AEFABEDA8C /* AppActivityMonitor.swift */; };
 		47065224CA325B0C9579E1A6 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */; };
 		EA47B7A53929EDA8B62BC528 /* WindowVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */; };
 		061B3FD1EAD3B75A9CE48BDA /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FB692B4C6C8962FEDD0EEF6A /* SDWebImageSwiftUI */; };
@@ -140,6 +141,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB401C64BAEFC4AEFABEDA8C /* AppActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppActivityMonitor.swift; sourceTree = "<group>"; };
 		CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
 		A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowVisibility.swift; sourceTree = "<group>"; };
 		EC6A2D227B56E6D12A2A3646 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 		DA4A88DC27C3272500720909 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				BB401C64BAEFC4AEFABEDA8C /* AppActivityMonitor.swift */,
 				A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */,
 				EC6A2D227B56E6D12A2A3646 /* Theme.swift */,
 				DAB53663285ACEBB00DD9857 /* GitHub */,
@@ -863,6 +866,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88D916F93D4215B273AB3B29 /* AppActivityMonitor.swift in Sources */,
 				47065224CA325B0C9579E1A6 /* AnimatedImageView.swift in Sources */,
 				EA47B7A53929EDA8B62BC528 /* WindowVisibility.swift in Sources */,
 				087D3966493577265DD52827 /* Theme.swift in Sources */,

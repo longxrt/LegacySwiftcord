@@ -56,6 +56,7 @@ struct SwiftcordApp: App {
 						// The window has been marked as needing another Update Constraints in Window pass, but it has already had more Update Constraints in Window passes than there are views in the window.
 						UserDefaults.standard.set(false, forKey: "NSWindowAssertWhenDisplayCycleLimitReached")
 
+						AppActivityMonitor.shared.start(gateway: gateway)
 						guard gateway.socket == nil else { return }
 						guard let token = acctManager.getActiveToken() else {
 							state.attemptLogin = true
