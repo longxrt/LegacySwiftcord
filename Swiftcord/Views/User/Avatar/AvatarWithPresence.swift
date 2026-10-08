@@ -25,7 +25,7 @@ struct AvatarWithPresence: View {
 		ZStack(alignment: .topLeading) {
 			Group {
 				if animate, avatarURL.isAnimatable {
-					SwiftyGifView(url: avatarURL.modifyingPathExtension("gif"))
+					AnimatedImageView(url: avatarURL.modifyingPathExtension("gif"))
 				} else {
 					BetterImageView(url: avatarURL)
 				}

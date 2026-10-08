@@ -1,4 +1,5 @@
 {
+  "originHash" : "29c0661320927780a376f9511f5b8f70127791a9652b7af6bf4bf98869c3d776",
   "pins" : [
     {
       "identity" : "bitbytedata",
@@ -34,6 +35,24 @@
       "state" : {
         "revision" : "c01bbdf2d633cf049ae1ed1a68a2020a8bda32e2",
         "version" : "5.1.0"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "2de3a496eaf6df9a1312862adcfd54acd73c39c0",
+        "version" : "5.21.7"
+      }
+    },
+    {
+      "identity" : "sdwebimageswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageSwiftUI.git",
+      "state" : {
+        "revision" : "0e331457ca9af2f0b08bcaa138a91ffb907b004f",
+        "version" : "3.1.4"
       }
     },
     {
@@ -100,15 +119,6 @@
       }
     },
     {
-      "identity" : "swiftygif",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/cryptoAlgorithm/SwiftyGif",
-      "state" : {
-        "branch" : "fix-timer-crash",
-        "revision" : "32a6bd02c9c44c8cdd4e98f46037678ee1abecbb"
-      }
-    },
-    {
       "identity" : "websocket.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tesseract-one/WebSocket.swift.git",
@@ -118,5 +128,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -176,7 +176,7 @@ struct MiniServerThumb: View {
     var body: some View {
         if let iconURL = guild.properties.iconAsset?.url(with: .webp, size: 240) {
             if iconURL.isAnimatable {
-                SwiftyGifView(
+                AnimatedImageView(
                     url: iconURL.modifyingPathExtension("gif"),
                     animating: animate,
                     resetWhenNotAnimating: true

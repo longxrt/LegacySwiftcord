@@ -90,7 +90,7 @@ struct ServerButtonStyle: ButtonStyle {
 					.font(.system(size: 24))
 			} else if let serverIconURL, let iconURL = URL(string: serverIconURL) {
 				if iconURL.isAnimatable {
-					SwiftyGifView(
+					AnimatedImageView(
 						url: iconURL.modifyingPathExtension("gif"),
 						animating: hovered,
 						resetWhenNotAnimating: true

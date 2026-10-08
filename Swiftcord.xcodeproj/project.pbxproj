@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47065224CA325B0C9579E1A6 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */; };
+		EA47B7A53929EDA8B62BC528 /* WindowVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */; };
+		061B3FD1EAD3B75A9CE48BDA /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FB692B4C6C8962FEDD0EEF6A /* SDWebImageSwiftUI */; };
+		24B0DAFAC0EC966EB9FCD96C /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 069DEBC7907DC85E47A867B6 /* SDWebImage */; };
 		087D3966493577265DD52827 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A2D227B56E6D12A2A3646 /* Theme.swift */; };
 		03A188BE2A0FDB7500D5F4BC /* BasicStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A188BD2A0FDB7500D5F4BC /* BasicStickerView.swift */; };
 		03A188C02A0FDB8A00D5F4BC /* MessageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A188BF2A0FDB8A00D5F4BC /* MessageStickerView.swift */; };
@@ -91,8 +95,6 @@
 		DA91017628C3989E00DD076B /* AccountMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91017528C3989E00DD076B /* AccountMeta.swift */; };
 		DA91017928C4726300DD076B /* AccountSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA91017828C4726300DD076B /* AccountSwitcher.swift */; };
 		DA97BA8C2849C0FA00059FD7 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA97BA8B2849C0FA00059FD7 /* Cache.swift */; };
-		DAA57E1D28920F1E00C9A931 /* SwiftyGifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA57E1C28920F1E00C9A931 /* SwiftyGifView.swift */; };
-		DAA57E242892270800C9A931 /* SwiftyGifNSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA57E232892270800C9A931 /* SwiftyGifNSView.swift */; };
 		DAAA22AF284DC0D700C1975E /* AppSettingsAccessibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAA22AE284DC0D700C1975E /* AppSettingsAccessibilityView.swift */; };
 		DAAFB5BC282A570D00807B54 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAFB5BB282A570D00807B54 /* CircularProgressView.swift */; };
 		DAAFB5C1282A64CD00807B54 /* LoFiMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAFB5C0282A64CD00807B54 /* LoFiMessageView.swift */; };
@@ -124,7 +126,6 @@
 		DACFD78C2A0A41A80060AA29 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACFD78B2A0A41A80060AA29 /* UserInfo.swift */; };
 		DAE557FB282D00B6001F4EF1 /* typing-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = DAE557FA282D00B6001F4EF1 /* typing-animation.json */; };
 		DAE936392A0A5C8300B8A6FF /* AccountOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE936382A0A5C8300B8A6FF /* AccountOverview.swift */; };
-		DAFD470728996DFC0075D71B /* SwiftyGif in Frameworks */ = {isa = PBXBuildFile; productRef = DAFD470628996DFC0075D71B /* SwiftyGif */; };
 		DAFD470D289A1F9F0075D71B /* AttachmentImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD470C289A1F9F0075D71B /* AttachmentImage.swift */; };
 		DAFD4710289A1FEB0075D71B /* AttachmentAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD470F289A1FEB0075D71B /* AttachmentAudio.swift */; };
 		DAFD4713289A202F0075D71B /* AttachmentProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD4712289A202F0075D71B /* AttachmentProgress.swift */; };
@@ -139,6 +140,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
+		A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowVisibility.swift; sourceTree = "<group>"; };
 		EC6A2D227B56E6D12A2A3646 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		03A188BD2A0FDB7500D5F4BC /* BasicStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStickerView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		03A188BF2A0FDB8A00D5F4BC /* MessageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStickerView.swift; sourceTree = "<group>"; };
@@ -232,8 +235,6 @@
 		DA97BA892848737C00059FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA97BA892848737C00059FD8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA97BA8B2849C0FA00059FD7 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
-		DAA57E1C28920F1E00C9A931 /* SwiftyGifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyGifView.swift; sourceTree = "<group>"; };
-		DAA57E232892270800C9A931 /* SwiftyGifNSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyGifNSView.swift; sourceTree = "<group>"; };
 		DAAA22AE284DC0D700C1975E /* AppSettingsAccessibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsAccessibilityView.swift; sourceTree = "<group>"; };
 		DAAFB5BB282A570D00807B54 /* CircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		DAAFB5C0282A64CD00807B54 /* LoFiMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoFiMessageView.swift; sourceTree = "<group>"; };
@@ -291,13 +292,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				061B3FD1EAD3B75A9CE48BDA /* SDWebImageSwiftUI in Frameworks */,
+				24B0DAFAC0EC966EB9FCD96C /* SDWebImage in Frameworks */,
 				36367146283C1B6500A5CBE6 /* AVKit.framework in Frameworks */,
 				DA296D90299CF2AC000A810E /* DiscordKit in Frameworks */,
 				DA296D92299CF2AC000A810E /* DiscordKitCore in Frameworks */,
 				DAFF8A7828C9DF6F0016AE8C /* CachedAsyncImage in Frameworks */,
 				DA12FB7C29AB84F500EDBBEE /* Lottie in Frameworks */,
 				DA8AEA6829029747007BAAEA /* Introspect in Frameworks */,
-				DAFD470728996DFC0075D71B /* SwiftyGif in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +442,7 @@
 		DA4A88DC27C3272500720909 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */,
 				EC6A2D227B56E6D12A2A3646 /* Theme.swift */,
 				DAB53663285ACEBB00DD9857 /* GitHub */,
 				DA520AE327D76BF8009FD740 /* Extensions */,
@@ -581,19 +584,10 @@
 			path = Avatar;
 			sourceTree = "<group>";
 		};
-		DAA57E22289226F500C9A931 /* SwiftyGif */ = {
-			isa = PBXGroup;
-			children = (
-				DAA57E1C28920F1E00C9A931 /* SwiftyGifView.swift */,
-				DAA57E232892270800C9A931 /* SwiftyGifNSView.swift */,
-			);
-			path = SwiftyGif;
-			sourceTree = "<group>";
-		};
 		DAAFB5BF282A635100807B54 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				DAA57E22289226F500C9A931 /* SwiftyGif */,
+				CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */,
 				DA32EF2E27C6766200A9ED72 /* Lottie */,
 				DA32EF4B27C8BF5000A9ED72 /* TagCloudView.swift */,
 				DACBD12E287BDE9D00CED3EF /* DialogView.swift */,
@@ -757,7 +751,8 @@
 			);
 			name = Swiftcord;
 			packageProductDependencies = (
-				DAFD470628996DFC0075D71B /* SwiftyGif */,
+				FB692B4C6C8962FEDD0EEF6A /* SDWebImageSwiftUI */,
+				069DEBC7907DC85E47A867B6 /* SDWebImage */,
 				DAFF8A7728C9DF6F0016AE8C /* CachedAsyncImage */,
 				DA8AEA6729029747007BAAEA /* Introspect */,
 				DA296D8F299CF2AC000A810E /* DiscordKit */,
@@ -806,7 +801,8 @@
 			);
 			mainGroup = DA4A887B27C0AF3000720909;
 			packageReferences = (
-				DAFD470528996DFC0075D71B /* XCRemoteSwiftPackageReference "SwiftyGif" */,
+				AFF6F4AFABDB7DDA95116F3D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				C449C2DDFCDD38A0E2B1741A /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				DAB1E46D28A202B900645FCD /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				DA8AEA6629029747007BAAEA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				DA63C8D029834E4C00B34D60 /* XCLocalSwiftPackageReference "../DiscordKit" */,
@@ -867,6 +863,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47065224CA325B0C9579E1A6 /* AnimatedImageView.swift in Sources */,
+				EA47B7A53929EDA8B62BC528 /* WindowVisibility.swift in Sources */,
 				087D3966493577265DD52827 /* Theme.swift in Sources */,
 				DAB53662285A272D00DD9857 /* OnboardingView.swift in Sources */,
 				DA520ACB27D4A23A009FD740 /* String+.swift in Sources */,
@@ -882,7 +880,6 @@
 				DAB53670285B693700DD9857 /* AnyTransition+.swift in Sources */,
 				E7AF1C27282FA3ED001F78DF /* Array.Channel+.swift in Sources */,
 				DA91017328C38EA300DD076B /* AccountRow.swift in Sources */,
-				DAA57E1D28920F1E00C9A931 /* SwiftyGifView.swift in Sources */,
 				DA520AC327D37873009FD740 /* MergePartialMessage.swift in Sources */,
 				DAB53665285ACED100DD9857 /* GitHubAPI.swift in Sources */,
 				E7AF1C36282FC2E8001F78DF /* NSTextView+.swift in Sources */,
@@ -941,7 +938,6 @@
 				DACFD78C2A0A41A80060AA29 /* UserInfo.swift in Sources */,
 				DA91017928C4726300DD076B /* AccountSwitcher.swift in Sources */,
 				DAB1E46C28A10BB100645FCD /* BetterImageView.swift in Sources */,
-				DAA57E242892270800C9A931 /* SwiftyGifNSView.swift in Sources */,
 				9FCE7B1D28C7140100213A3F /* ServerFolder.swift in Sources */,
 				DA9029572A0CC450008E05FA /* Permissions+.swift in Sources */,
 				DA2BD30C284CB38B00EBB8D6 /* AppSettingsAppearanceView.swift in Sources */,
@@ -1340,6 +1336,22 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AFF6F4AFABDB7DDA95116F3D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
+		C449C2DDFCDD38A0E2B1741A /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.0;
+			};
+		};
 		DA12FB7A29AB84F500EDBBEE /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
@@ -1364,17 +1376,19 @@
 				kind = branch;
 			};
 		};
-		DAFD470528996DFC0075D71B /* XCRemoteSwiftPackageReference "SwiftyGif" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/cryptoAlgorithm/SwiftyGif";
-			requirement = {
-				branch = "fix-timer-crash";
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FB692B4C6C8962FEDD0EEF6A /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFF6F4AFABDB7DDA95116F3D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		069DEBC7907DC85E47A867B6 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C449C2DDFCDD38A0E2B1741A /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
 		DA12FB7B29AB84F500EDBBEE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DA12FB7A29AB84F500EDBBEE /* XCRemoteSwiftPackageReference "lottie-spm" */;
@@ -1394,11 +1408,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DA8AEA6629029747007BAAEA /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		DAFD470628996DFC0075D71B /* SwiftyGif */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DAFD470528996DFC0075D71B /* XCRemoteSwiftPackageReference "SwiftyGif" */;
-			productName = SwiftyGif;
 		};
 		DAFF8A7728C9DF6F0016AE8C /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;

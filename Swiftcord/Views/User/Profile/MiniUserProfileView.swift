@@ -34,7 +34,7 @@ struct MiniUserProfileView<RichContentSlot: View>: View {
 				let url = banner.url(with: .webp, size: 600)
 				Group {
 					if url.isAnimatable {
-						SwiftyGifView(url: url.modifyingPathExtension("gif"))
+						AnimatedImageView(url: url.modifyingPathExtension("gif"))
 					} else {
 						CachedAsyncImage(url: url) { image in
 							image.resizable().scaledToFill()

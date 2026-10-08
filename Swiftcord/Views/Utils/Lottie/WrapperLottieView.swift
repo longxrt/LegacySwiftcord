@@ -14,6 +14,11 @@ public final class WrapperAnimationView: NSView {
     let width: Double!
     let height: Double!
 
+	private let visibility = WindowVisibilityTracker()
+	/// Whether the owner wants the animation playing; it only renders while visible on screen
+	private var wantsPlay = false
+	private var completion: LottieCompletionBlock?
+
 	init(animation: Lottie.LottieAnimation?, width: Double, height: Double) {
         self.width = width
         self.height = height
@@ -33,7 +38,21 @@ public final class WrapperAnimationView: NSView {
             animationView.heightAnchor.constraint(equalToConstant: height),
             animationView.widthAnchor.constraint(equalToConstant: width)
         ])
+		visibility.onChange = { [weak self] _ in self?.applyPlaybackState() }
     }
+
+	public override func viewDidMoveToWindow() {
+		super.viewDidMoveToWindow()
+		visibility.track(window)
+	}
+
+	fileprivate func applyPlaybackState() {
+		if wantsPlay && visibility.isVisible {
+			if !animationView.isAnimationPlaying { animationView.play(completion: completion) }
+		} else if animationView.isAnimationPlaying {
+			animationView.pause()
+		}
+	}
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
@@ -48,12 +67,13 @@ extension WrapperAnimationView {
     }
 
     func play(completion: LottieCompletionBlock?) {
-        // print("Animation play")
-        animationView.play(completion: completion)
+		wantsPlay = true
+		self.completion = completion
+		applyPlaybackState()
     }
 
     func stop() {
-        // print("Animation stop")
-        animationView.pause()
+		wantsPlay = false
+		applyPlaybackState()
     }
 }
