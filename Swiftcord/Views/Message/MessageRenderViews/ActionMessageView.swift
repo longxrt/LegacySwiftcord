@@ -33,7 +33,7 @@ struct ActionMessageView: View {
 			)
 		case .recipientAdd:
 			return ActionMessageData(
-				message: "**\(message.author.username)** added **\(message.mentions[0].username)** to the group.",
+				message: "**\(message.author.username)** added **\(message.mentions.first?.username ?? "someone")** to the group.",
 				icon: "arrow.right",
 				color: .green
 			)

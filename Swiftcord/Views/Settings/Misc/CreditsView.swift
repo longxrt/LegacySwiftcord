@@ -146,6 +146,8 @@ struct CreditsView: View {
 			}
 
 			if let contributors = contributors {
+				// Contribution count of the 3rd-ranked contributor; guarded because GitHub may return fewer than 3
+				let topThreshold = contributors.count > 2 ? contributors[2].contributions : 0
 				LazyVGrid(columns: [
 					GridItem(.flexible()),
 					GridItem(.flexible()),
@@ -155,7 +157,7 @@ struct CreditsView: View {
 					ForEach(contributors.prefix(12), id: \.username) { contributor in
 						HStack(spacing: 4) {
 							// Top 3 contributors get shown more prominently
-							if contributor.contributions >= contributors[2].contributions {
+							if contributor.contributions >= topThreshold {
 								Button {
 									openURL(contributor.url)
 								} label: {

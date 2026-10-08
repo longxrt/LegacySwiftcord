@@ -60,7 +60,7 @@ struct MessagesViewHeader: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if chl?.type == .dm {
-                if let rID = chl?.recipient_ids?[0],
+                if let rID = chl?.recipient_ids?.first,
                    let url = gateway.cache.users[rID]?.avatarURL(size: 160) { // swiftlint:disable:this indentation_width
                     BetterImageView(url: url)
                         .frame(width: 80, height: 80)

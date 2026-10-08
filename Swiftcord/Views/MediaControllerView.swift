@@ -19,12 +19,12 @@ struct MediaControllerView: View {
 
             Divider().padding(.vertical, 8)
 
-            Text(audioManager.isStopped ? "Nothing's Playing" : audioManager.queue[0].filename.replacingOccurrences(of: "_", with: " "))
+            Text((audioManager.isStopped ? nil : audioManager.queue.first)
+                .map { $0.filename.replacingOccurrences(of: "_", with: " ") } ?? "Nothing's Playing")
                 .font(.headline)
             Text(
-                audioManager.isStopped
-                ? "Select an audio file in a channel to play it!"
-                : audioManager.queue[0].from
+                (audioManager.isStopped ? nil : audioManager.queue.first?.from)
+                ?? "Select an audio file in a channel to play it!"
             )
             .font(.subheadline)
             .opacity(0.77)

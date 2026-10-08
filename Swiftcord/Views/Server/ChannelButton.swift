@@ -61,7 +61,7 @@ struct DMButton: View {
 	var body: some View {
 		Button { selectedCh = dm } label: {
 			HStack {
-				if dm.type == .dm, let user = gateway.cache.users[dm.recipient_ids![0]] {
+				if dm.type == .dm, let recipientID = dm.recipient_ids?.first, let user = gateway.cache.users[recipientID] {
 					AvatarWithPresence(
 						avatarURL: user.avatarURL(size: 64),
 						presence: gateway.presences[user.id]?.status ?? .offline,
