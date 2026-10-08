@@ -144,6 +144,12 @@ Then open `Swiftcord/Swiftcord.xcodeproj`, or build and install to `/Application
 Swiftcord/Scripts/install.sh
 ```
 
+To package a universal (Apple Silicon + Intel) DMG for distribution in `dist/`:
+
+```bash
+Swiftcord/Scripts/make-dmg.sh
+```
+
 Builds are signed to run locally ("Sign to Run Locally") with their own bundle ID
 (`io.cryptoalgo.swiftcord.sequoia`), so they don't conflict with the official app.
 
