@@ -57,6 +57,7 @@ struct SwiftcordApp: App {
 						UserDefaults.standard.set(false, forKey: "NSWindowAssertWhenDisplayCycleLimitReached")
 
 						AppActivityMonitor.shared.start(gateway: gateway)
+						ActivityStatusManager.shared.start(gateway: gateway)
 						guard gateway.socket == nil else { return }
 						guard let token = acctManager.getActiveToken() else {
 							state.attemptLogin = true

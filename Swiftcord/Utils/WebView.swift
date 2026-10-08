@@ -139,7 +139,11 @@ struct WebView: NSViewRepresentable {
         webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
         #endif
 
-        webView.load(URLRequest(url: URL(string: viewModel.link)!))
+        // Install the telemetry blocker before the first request so nothing slips through
+        let link = viewModel.link
+        LoginTelemetryBlocker.install(on: webView.configuration.userContentController) { [webView] in
+            webView.load(URLRequest(url: URL(string: link)!))
+        }
         return webView
     }
 
@@ -204,4 +208,43 @@ struct WebView: NSViewRepresentable {
             completionHandler(.performDefaultHandling, nil)
         }
     }
+}
+
+/// Blocks Discord's analytics, metrics and crash reporting on the login page.
+///
+/// Login uses Discord's own web app, which runs the same tracking as discord.com. The
+/// Swiftcord client itself never calls these endpoints, so this only affects login.
+private enum LoginTelemetryBlocker {
+	private static let identifier = "swiftcord-login-telemetry-v1"
+	private static let log = Logger(category: "LoginTelemetryBlocker")
+
+	// WebKit's content rule regexes don't support alternation, so one rule per endpoint
+	private static let rules = """
+	[
+	  {"trigger": {"url-filter": "^https?://[^/]*discord\\\\.com/api/v[0-9]+/science"}, "action": {"type": "block"}},
+	  {"trigger": {"url-filter": "^https?://[^/]*discord\\\\.com/api/v[0-9]+/metrics"}, "action": {"type": "block"}},
+	  {"trigger": {"url-filter": "^https?://[^/]*discord\\\\.com/api/v[0-9]+/track"}, "action": {"type": "block"}},
+	  {"trigger": {"url-filter": "^https?://[^/]*discord\\\\.com/error-reporting-proxy/"}, "action": {"type": "block"}},
+	  {"trigger": {"url-filter": "^https?://[^/]*sentry\\\\.io/"}, "action": {"type": "block"}}
+	]
+	"""
+
+	/// Adds the rules to `controller`, then calls `completion` on the main thread.
+	/// If the rules can't be compiled, login still proceeds.
+	static func install(on controller: WKUserContentController, completion: @escaping () -> Void) {
+		guard let store = WKContentRuleListStore.default() else {
+			completion()
+			return
+		}
+		store.compileContentRuleList(forIdentifier: identifier, encodedContentRuleList: rules) { list, error in
+			DispatchQueue.main.async {
+				if let list {
+					controller.add(list)
+				} else {
+					log.error("Couldn't compile telemetry rules: \(String(describing: error), privacy: .public)")
+				}
+				completion()
+			}
+		}
+	}
 }

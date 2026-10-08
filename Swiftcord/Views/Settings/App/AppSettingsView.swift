@@ -21,6 +21,10 @@ struct AppSettingsView: View {
 					ScrollView { AppSettingsAccessibilityView().padding(40) }
                 }
 
+                NavigationLink("Activity Status", tag: .activity, selection: $selectedLink) {
+					ScrollView { AppSettingsActivityView().padding(40) }
+                }
+
                 NavigationLink("settings.app.voiceVideo", tag: .voiceVideo, selection: $selectedLink) {
                     Text("")
                 }
@@ -59,6 +63,7 @@ private extension AppSettingsView {
 	enum SidebarLink: String {
 		case appearance = "Appearance"
 		case accessibility = "Accessibility"
+		case activity = "Activity Status"
 		case voiceVideo = "Voice & Video"
 		case textImages = "Text & Images"
 		case notifs = "Notifications"

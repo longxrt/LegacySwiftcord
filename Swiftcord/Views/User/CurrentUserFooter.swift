@@ -37,12 +37,16 @@ struct CurrentUserFooter: View {
 
 	private func updatePresence(with presence: PresenceStatus, customStatus: String? = nil, clearCustomStatus: Bool = false) {
 		// Populate activities
+		// Keep the custom status (unless it's being replaced); games and music come from
+		// ActivityStatusManager so they survive status changes
 		var activities: [ActivityOutgoing] = gateway.presences[user.id]?.activities.compactMap {
-			(clearCustomStatus || customStatus != nil) && $0.type == .custom ? nil : ActivityOutgoing(from: $0)
+			guard $0.type == .custom, !clearCustomStatus, customStatus == nil else { return nil }
+			return ActivityOutgoing(from: $0)
 		} ?? []
 		if let customStatus = customStatus {
 			activities.append(ActivityOutgoing(name: "Custom Status", type: .custom, state: customStatus))
 		}
+		activities += ActivityStatusManager.shared.activities
 
 		let oldPresence = gateway.presences[user.id]
 		// Preemptively update presence

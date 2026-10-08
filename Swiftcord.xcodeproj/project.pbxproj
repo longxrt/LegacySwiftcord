@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A2BFDBC5B2BA111F25A32421 /* AppSettingsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEB23D7734A7D0B6ABF8877 /* AppSettingsActivityView.swift */; };
+		456369A357268FCA5F81CA06 /* ActivityStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5206AB921A909689F444E0 /* ActivityStatusManager.swift */; };
+		E090AE1D79E12A2CE8FB5509 /* GameActivitySource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781043FDB9A2E94F44CFE994 /* GameActivitySource.swift */; };
+		DA6542DEB14744D00FCA3737 /* MusicActivitySource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF861D5F6833A992C14772 /* MusicActivitySource.swift */; };
 		88D916F93D4215B273AB3B29 /* AppActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB401C64BAEFC4AEFABEDA8C /* AppActivityMonitor.swift */; };
 		47065224CA325B0C9579E1A6 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */; };
 		EA47B7A53929EDA8B62BC528 /* WindowVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */; };
@@ -140,6 +144,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2CEB23D7734A7D0B6ABF8877 /* AppSettingsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsActivityView.swift; sourceTree = "<group>"; };
+		8B5206AB921A909689F444E0 /* ActivityStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusManager.swift; sourceTree = "<group>"; };
+		781043FDB9A2E94F44CFE994 /* GameActivitySource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameActivitySource.swift; sourceTree = "<group>"; };
+		57FF861D5F6833A992C14772 /* MusicActivitySource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicActivitySource.swift; sourceTree = "<group>"; };
 		BB401C64BAEFC4AEFABEDA8C /* AppActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppActivityMonitor.swift; sourceTree = "<group>"; };
 		CDCF46E80E5D2766CF9F3417 /* AnimatedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
 		A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowVisibility.swift; sourceTree = "<group>"; };
@@ -442,6 +450,9 @@
 		DA4A88DC27C3272500720909 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8B5206AB921A909689F444E0 /* ActivityStatusManager.swift */,
+				781043FDB9A2E94F44CFE994 /* GameActivitySource.swift */,
+				57FF861D5F6833A992C14772 /* MusicActivitySource.swift */,
 				BB401C64BAEFC4AEFABEDA8C /* AppActivityMonitor.swift */,
 				A7002E110C15E6CE0E1B4889 /* WindowVisibility.swift */,
 				EC6A2D227B56E6D12A2A3646 /* Theme.swift */,
@@ -707,6 +718,7 @@
 		E7AF1C2F282FB004001F78DF /* App */ = {
 			isa = PBXGroup;
 			children = (
+				2CEB23D7734A7D0B6ABF8877 /* AppSettingsActivityView.swift */,
 				DA520AD227D4D073009FD740 /* AppSettingsView.swift */,
 				DA2BD30B284CB38B00EBB8D6 /* AppSettingsAppearanceView.swift */,
 				DAAA22AE284DC0D700C1975E /* AppSettingsAccessibilityView.swift */,
@@ -862,6 +874,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2BFDBC5B2BA111F25A32421 /* AppSettingsActivityView.swift in Sources */,
+				456369A357268FCA5F81CA06 /* ActivityStatusManager.swift in Sources */,
+				E090AE1D79E12A2CE8FB5509 /* GameActivitySource.swift in Sources */,
+				DA6542DEB14744D00FCA3737 /* MusicActivitySource.swift in Sources */,
 				88D916F93D4215B273AB3B29 /* AppActivityMonitor.swift in Sources */,
 				47065224CA325B0C9579E1A6 /* AnimatedImageView.swift in Sources */,
 				EA47B7A53929EDA8B62BC528 /* WindowVisibility.swift in Sources */,
