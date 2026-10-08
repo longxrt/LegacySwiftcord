@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EDF4660991BE9C2885D0F7A /* FullUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E70E8E8B1A4CACF3415F3C /* FullUserProfileView.swift */; };
 		A2BFDBC5B2BA111F25A32421 /* AppSettingsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEB23D7734A7D0B6ABF8877 /* AppSettingsActivityView.swift */; };
 		456369A357268FCA5F81CA06 /* ActivityStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5206AB921A909689F444E0 /* ActivityStatusManager.swift */; };
 		E090AE1D79E12A2CE8FB5509 /* GameActivitySource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781043FDB9A2E94F44CFE994 /* GameActivitySource.swift */; };
@@ -144,6 +145,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		85E70E8E8B1A4CACF3415F3C /* FullUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullUserProfileView.swift; sourceTree = "<group>"; };
 		2CEB23D7734A7D0B6ABF8877 /* AppSettingsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsActivityView.swift; sourceTree = "<group>"; };
 		8B5206AB921A909689F444E0 /* ActivityStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusManager.swift; sourceTree = "<group>"; };
 		781043FDB9A2E94F44CFE994 /* GameActivitySource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameActivitySource.swift; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 		DA54D572284497CC00B11857 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				85E70E8E8B1A4CACF3415F3C /* FullUserProfileView.swift */,
 				DA520AD827D4E7A3009FD740 /* LargeUserProfileView.swift */,
 				DA54D5702841D6CF00B11857 /* MiniUserProfileView.swift */,
 				DA54D573284497E400B11857 /* ProfileAccentMask.swift */,
@@ -874,6 +877,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EDF4660991BE9C2885D0F7A /* FullUserProfileView.swift in Sources */,
 				A2BFDBC5B2BA111F25A32421 /* AppSettingsActivityView.swift in Sources */,
 				456369A357268FCA5F81CA06 /* ActivityStatusManager.swift in Sources */,
 				E090AE1D79E12A2CE8FB5509 /* GameActivitySource.swift in Sources */,

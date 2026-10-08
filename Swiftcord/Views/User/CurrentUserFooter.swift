@@ -22,6 +22,7 @@ struct CurrentUserFooter: View {
 	@State var showQR = false
 	@State var switcherHelpPresented = false
 	@State var settingPresence = false
+	@State private var fullProfilePresented = false
 
 	@EnvironmentObject var switcher: AccountSwitcher
 	@EnvironmentObject var gateway: DiscordGateway
@@ -114,6 +115,10 @@ struct CurrentUserFooter: View {
 				.contentShape(Rectangle())
 			}
 			.buttonStyle(.plain)
+			.sheet(isPresented: $fullProfilePresented) {
+				FullUserProfileView(user: User(from: user), guildID: nil, guildRoles: []) { _ in }
+					.environmentObject(gateway)
+			}
 			.popover(isPresented: $userPopoverPresented) {
 				MiniUserProfileView(user: User(from: user), member: nil) {
 					VStack(alignment: .leading, spacing: 4) {
@@ -123,6 +128,17 @@ struct CurrentUserFooter: View {
 								.textCase(.uppercase)
 							Text(user.id.createdAt?.formatted(.dateTime.day().month().year()) ?? "Unknown")
 						}
+						.padding(.bottom, 8)
+
+						Button {
+							userPopoverPresented = false
+							// Let the popover finish closing before presenting the sheet
+							DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { fullProfilePresented = true }
+						} label: {
+							Label("View Full Profile", systemImage: "person.crop.rectangle")
+								.frame(maxWidth: .infinity)
+						}
+						.controlSize(.large)
 						.padding(.bottom, 8)
 
 						Divider()

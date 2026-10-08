@@ -25,10 +25,11 @@ struct UserAvatarView: View {
     @State private var infoPresenting = false
 	@State private var loadFullFailed = false
 	@State private var loadingProfile = false
-	@State private var note = ""
+	@State private var fullProfilePresented = false
 
 	@EnvironmentObject var ctx: ServerContext
 	@EnvironmentObject var gateway: DiscordGateway
+	@EnvironmentObject var state: UIState
 
 	private static let profileCache = Cache<ProfileKey, (User, Member?)>()
 
@@ -81,6 +82,14 @@ struct UserAvatarView: View {
 				.clipShape(Circle())
 		}
 		.buttonStyle(.borderless)
+		.sheet(isPresented: $fullProfilePresented) {
+			FullUserProfileView(
+				user: fullUser ?? user,
+				guildID: guildID,
+				guildRoles: ctx.roles
+			) { id in state.selectedGuildID = id }
+			.environmentObject(gateway)
+		}
 		.popover(isPresented: $infoPresenting, arrowEdge: .trailing) {
 			MiniUserProfileView(
 				user: fullUser ?? user,
@@ -135,22 +144,7 @@ struct UserAvatarView: View {
 					.textCase(.uppercase)
 					.padding(.top, 6)
 					if !roles.isEmpty {
-						TagCloudView(
-							content: roles.map { role in
-								HStack(spacing: 6) {
-									Circle()
-										.fill(Color(hex: role.color))
-										.frame(width: 14, height: 14)
-										.padding(.leading, 6)
-									Text(role.name)
-										.font(.system(size: 12))
-										.padding(.trailing, 8)
-								}
-								.frame(height: 24)
-								.background(.gray.opacity(0.2))
-								.cornerRadius(7)
-							}
-						).padding(-2)
+						RoleTagCloud(roles: roles)
 					}
 				}
 
@@ -158,19 +152,20 @@ struct UserAvatarView: View {
 					.font(.headline)
 					.textCase(.uppercase)
 					.padding(.top, 6)
-				// Notes are stored locally for now, but eventually will be synced with the Discord API
-				TextField("Add a note to this user (only visible to you)", text: $note)
-					.textFieldStyle(.roundedBorder)
-					.onChange(of: note) { _ in
-						if note.isEmpty {
-							UserDefaults.standard.removeObject(forKey: "notes.\(user.id)")
-						} else {
-							UserDefaults.standard.set(note, forKey: "notes.\(user.id)")
-						}
+				ProfileNoteField(userID: user.id)
+
+				if webhookID == nil {
+					Button {
+						infoPresenting = false
+						// Let the popover finish closing before presenting the sheet
+						DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { fullProfilePresented = true }
+					} label: {
+						Label("View Full Profile", systemImage: "person.crop.rectangle")
+							.frame(maxWidth: .infinity)
 					}
-					.onAppear {
-						note = UserDefaults.standard.string(forKey: "notes.\(user.id)") ?? ""
-					}
+					.controlSize(.large)
+					.padding(.top, 6)
+				}
 			}
 		}
 	}
