@@ -252,7 +252,8 @@ struct MessagesView: View {
                 guard !guildID.isDM else { return true }
                 guard let member = ctx.member else { return false }
                 return channel.computedPermissions(
-                    guildID: guildID, member: member, basePerms: ctx.basePermissions
+                    guildID: guildID, member: member, basePerms: ctx.basePermissions,
+                    userID: gateway.cache.user?.id
                 )
                 .contains(.sendMessages)
             }()

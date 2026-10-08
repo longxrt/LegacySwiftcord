@@ -34,23 +34,37 @@ struct ServerView: View {
         guard let channels = serverCtx.guild?.channelList.discordSorted()
 		else { return }
 
+		// Only consider channels the user can open; Discord sends hidden channels too,
+		// and fetching their messages fails with "Missing Access"
+		let selectableChs = channels.filter { $0.hasMessageHistory && canView($0) }
 		if let lastChannel = UserDefaults.standard.string(forKey: "lastCh.\(serverCtx.guild!.id)"),
-           let lastChObj = channels.first(where: { $0.id == lastChannel }) { // swiftlint:disable:this indentation_width
+           let lastChObj = selectableChs.first(where: { $0.id == lastChannel }) { // swiftlint:disable:this indentation_width
             serverCtx.channel = lastChObj
             return
         }
-        let selectableChs = channels.filter { $0.type != .category }
-		serverCtx.channel = selectableChs.first
+		// Prefer text channels over voice/stage channels for the initial selection
+		serverCtx.channel = selectableChs.first { $0.type == .text || $0.type == .news } ?? selectableChs.first
 
         // Prevent deadlocking if there are no DMs/channels
 		if serverCtx.channel == nil { state.loadingState = .messageLoad }
     }
 
+	private func canView(_ channel: Channel) -> Bool {
+		guard let guild = serverCtx.guild, !guild.properties.isDMChannel else { return true }
+		// Without member data permissions can't be computed; fall back to showing everything
+		guard let member = serverCtx.member else { return true }
+		return channel.computedPermissions(
+			guildID: guild.id, member: member,
+			basePerms: serverCtx.basePermissions, userID: gateway.cache.user?.id
+		).contains(.viewChannel)
+	}
+
     private static func computeBasePermissions(
         for member: Member,
-        guild: PreloadedGuild, guildRoles: [Role]
+        guild: PreloadedGuild, guildRoles: [Role],
+        userID: Snowflake?
     ) -> Permissions {
-        if member.user_id == guild.properties.owner_id {
+        if (userID ?? member.user_id) == guild.properties.owner_id {
             return .all
         }
         guard var basePerms = guildRoles.first(where: { $0.id == guild.id })?.permissions else {
@@ -66,25 +80,28 @@ struct ServerView: View {
 
 	private func bootstrapGuild(with guild: PreloadedGuild) {
 		serverCtx.guild = guild
-		serverCtx.roles = []
-        serverCtx.basePermissions = .init()
-		loadChannels()
 		// Sending malformed IDs causes an instant Gateway session termination
         guard !guild.properties.isDMChannel else {
+			serverCtx.roles = []
+			serverCtx.member = nil
             serverCtx.basePermissions = .all
+			loadChannels()
 			return
 		}
 
-
 		// Subscribe to typing events
 		gateway.subscribeGuildEvents(id: guild.id)
+		// Permissions must be known before picking a channel, so hidden channels are never selected
 		serverCtx.roles = guild.roles.compactMap { role in try? role.result.get() }
         serverCtx.member = gateway.cache.members[guild.id]
-        // print(guild.roles)
-        guard let member = serverCtx.member else { return }
-        print(member)
-        serverCtx.basePermissions = Self.computeBasePermissions(for: member, guild: guild, guildRoles: serverCtx.roles)
-        print(serverCtx.basePermissions)
+		if let member = serverCtx.member {
+			serverCtx.basePermissions = Self.computeBasePermissions(
+				for: member, guild: guild, guildRoles: serverCtx.roles, userID: gateway.cache.user?.id
+			)
+		} else {
+			serverCtx.basePermissions = .init()
+		}
+		loadChannels()
 		// Retrieve guild roles to update context
 		/*Task {
 			guard let newRoles = await restAPI.getGuildRoles(id: guild.id) else { return }
@@ -98,7 +115,6 @@ struct ServerView: View {
     }
 
     var body: some View {
-        let _ = print("rerender server")
         NavigationView {
             // MARK: Channel List
             VStack(spacing: 0) {

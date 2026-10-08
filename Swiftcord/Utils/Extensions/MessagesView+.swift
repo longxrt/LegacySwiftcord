@@ -8,6 +8,9 @@
 import Foundation
 import DiscordKit
 import DiscordKitCore
+import os
+
+private let messagesLog = Logger(category: "MessagesView")
 
 internal extension MessagesView {
 	func fetchMoreMessages() {
@@ -23,11 +26,12 @@ internal extension MessagesView {
 		viewModel.fetchMessagesTask = Task {
 			let lastMsg = viewModel.messages.last?.id
 
-			guard let newMessages = try? await restAPI.getChannelMsgs(
-				id: channel.id,
-				before: lastMsg
-			) else {
+			let newMessages: [DecodeThrowable<Message>]
+			do {
+				newMessages = try await restAPI.getChannelMsgs(id: channel.id, before: lastMsg)
+			} catch {
 				try Task.checkCancellation() // Check if the task is cancelled before continuing
+				messagesLog.error("Failed to load messages for channel \(channel.id, privacy: .public) (type \(channel.type.rawValue, privacy: .public)): \(String(describing: error), privacy: .public)")
 
 				viewModel.fetchMessagesTask = nil
 				viewModel.loadError = true

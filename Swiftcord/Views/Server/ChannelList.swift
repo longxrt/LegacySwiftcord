@@ -43,7 +43,8 @@ struct ChannelList: View, Equatable {
 			return channel.computedPermissions(
 				guildID: guildID,
 				member: member,
-				basePerms: serverCtx.basePermissions
+				basePerms: serverCtx.basePermissions,
+				userID: gateway.cache.user?.id
 			)
 			.contains(.viewChannel)
 		}
