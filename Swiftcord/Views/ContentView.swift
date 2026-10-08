@@ -68,7 +68,7 @@ struct ContentView: View {
                 folder.guild_ids.contains(guild.id)
             }
         }
-        .sorted { lhs, rhs in lhs.joined_at > rhs.joined_at }
+        .sorted { lhs, rhs in (lhs.joined_at ?? .distantPast) > (rhs.joined_at ?? .distantPast) }
         .map { ServerListItem.guild($0) }
         return unsortedGuilds + gateway.guildFolders.compactMap { folder -> ServerListItem? in
             if folder.id != nil {

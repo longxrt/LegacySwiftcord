@@ -25,7 +25,7 @@ struct ChannelList: View, Equatable {
 			.listRowInsets(.init(top: 1, leading: 0, bottom: 1, trailing: 0))
 			.listRowBackground(Spacer().overlay(alignment: .leading) {
 				// Check if we should show unread indicator
-				if let lastID = gateway.readState[channel.id]?.last_message_id, let _chLastID = channel.last_message_id, let chLastID = Int(_chLastID), lastID.intValue < chLastID {
+				if let lastID = gateway.readState[channel.id]?.ackMessageID.flatMap(Int.init), let _chLastID = channel.last_message_id, let chLastID = Int(_chLastID), lastID < chLastID {
 					Circle().fill(.primary).frame(width: 8, height: 8).offset(x: 2)
 				}
 			})

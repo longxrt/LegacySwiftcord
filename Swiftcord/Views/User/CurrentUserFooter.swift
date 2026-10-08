@@ -87,7 +87,7 @@ struct CurrentUserFooter: View {
 			} label: {
 				HStack(spacing: 8) {
 					AvatarWithPresence(
-						avatarURL: user.avatarURL(),
+						avatarURL: user.avatarURL(size: 160),
 						presence: curUserPresence,
 						animate: false
 					)
@@ -206,7 +206,7 @@ struct CurrentUserFooter: View {
 		}
 		.frame(height: 52)
 		.padding(.horizontal, 8)
-		.background(Color(nsColor: .controlBackgroundColor).opacity(0.5))
+		.background(Color(nsColor: .controlBackgroundColor.withAlphaComponent(0.5)))
 		.sheet(isPresented: $switcherPresented) {
 			accountSwitcher()
 		}

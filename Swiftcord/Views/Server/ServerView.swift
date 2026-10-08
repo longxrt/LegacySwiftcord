@@ -31,7 +31,7 @@ struct ServerView: View {
 
 	private func loadChannels() {
 		guard state.loadingState != .initial else { return } // Ensure gateway is connected before loading anything
-        guard let channels = serverCtx.guild?.channels.discordSorted()
+        guard let channels = serverCtx.guild?.channelList.discordSorted()
 		else { return }
 
 		if let lastChannel = UserDefaults.standard.string(forKey: "lastCh.\(serverCtx.guild!.id)"),
@@ -103,7 +103,7 @@ struct ServerView: View {
             // MARK: Channel List
             VStack(spacing: 0) {
 				if let guild = guild {
-                    ChannelList(channels: guild.properties.name == "DMs" ? gateway.cache.dms : guild.channels, selCh: $serverCtx.channel)
+                    ChannelList(channels: guild.properties.name == "DMs" ? gateway.cache.dms : guild.channelList, selCh: $serverCtx.channel)
                         .equatable()
 						.toolbar {
 							ToolbarItem {

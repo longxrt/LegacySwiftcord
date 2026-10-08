@@ -45,7 +45,8 @@ internal extension MessagesView {
 			try Task.checkCancellation()
 
 			viewModel.reachedTop = newMessages.count < 50
-			viewModel.messages.append(contentsOf: newMessages)
+			// Skip individual messages that failed to decode instead of dropping the whole page
+			viewModel.messages.append(contentsOf: newMessages.compactMap { try? $0.result.get() })
 			viewModel.fetchMessagesTask = nil
 		}
 	}

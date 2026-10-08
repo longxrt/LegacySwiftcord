@@ -16,15 +16,47 @@ struct StickerPackView: View {
 	@Binding var packPresenting: Bool
 	@State private var stickerHovered: Int?
 	@State private var listHovered: Bool = false
+	private var bannerURL: URL? { pack.bannerAsset?.url(with: .webp, size: 1024) }
+
+	@ViewBuilder private var banner: some View {
+		if let bannerURL {
+			CachedAsyncImage(url: bannerURL) { image in
+				image.resizable().scaledToFill()
+			} placeholder: {
+				ProgressView().progressViewStyle(.circular)
+			}
+			.frame(height: 100)
+		}
+	}
+
+	private var rowCount: Int { (pack.stickers.count + 2) / 3 }
+
+	private func sticker(at index: Int) -> some View {
+		let sticker = pack.stickers[index]
+		return StickerItemView(
+			sticker: StickerItem(id: sticker.id, name: sticker.name, format_type: sticker.format_type),
+			size: 95, play: .onHover
+		)
+			.onHover { stickerHovered = $0 ? index : nil }
+			.scaleEffect(stickerHovered == index ? 1.1 : 1.0)
+			.opacity(stickerHovered == index ? 1 : 0.5)
+	}
+
+	private var stickerGrid: some View {
+		List {
+			ForEach(0..<rowCount, id: \.self) { row in
+				HStack {
+					ForEach(row * 3..<min(row * 3 + 3, pack.stickers.count), id: \.self) { index in
+						sticker(at: index)
+					}
+				}.frame(maxWidth: .infinity)
+			}
+		}
+	}
+
 	var body: some View {
 		VStack {
-			if pack.banner_asset_id != nil {
-				VStack {
-					CachedAsyncImage(url: pack.banner_asset_id?.stickerPackBannerURL(with: .webp, size: 1024)) { image in
-						image.resizable().scaledToFill()
-					} placeholder: { ProgressView().progressViewStyle(.circular)}
-				}.frame(height: 100)
-			}
+			banner
 			VStack {
 				HStack(spacing: 15) {
 					// Back button
@@ -42,21 +74,7 @@ struct StickerPackView: View {
 				Text(pack.description)
 					.fixedSize(horizontal: false, vertical: true)
 					.frame(maxWidth: .infinity, alignment: .leading)
-				List {
-					ForEach(0..<Int(ceil(Double(pack.stickers.count)/3.0)), id: \.self) { row in
-						HStack {
-							ForEach(0..<min(3, Int(pack.stickers.count - row * 3)), id: \.self) { column in
-								let index: Int = row*3+column
-								StickerItemView(sticker: pack.stickers[index], size: 95, play: .onHover)
-									.onHover {
-										stickerHovered = $0 ? index : nil
-									}
-									.scaleEffect((stickerHovered == index) ? 1.1 : 1.0)
-									.opacity((stickerHovered == index) ? 1 : 0.5)
-							}
-						}.frame(maxWidth: .infinity)
-					}
-				}
+				stickerGrid
 				.frame(height: 320)
 				.onHover {listHovered = $0}
 				if listHovered {

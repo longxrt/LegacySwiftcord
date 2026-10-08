@@ -47,7 +47,7 @@ struct UserSettingsAccount: View {
             .clipShape(Circle())
             .frame(width: 100, height: 100)
             Text(user.username).font(.title2)
-            Text(user.email)
+            if let email = user.email { Text(email) }
 
             GroupBox {
                 VStack(alignment: .leading, spacing: 8) {

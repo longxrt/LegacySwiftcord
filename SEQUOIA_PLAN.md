@@ -18,12 +18,13 @@ messages, etc.).
   - `GatewayCachedState.swift:105` — `Channel.last_message_id` is now `let`
 
 ## Phase 1 — Get it building
-- [ ] Install Xcode (blocker), `xcode-select -s`
+- [x] Install Xcode 16.4, `xcode-select -s`
 - [x] Fork DiscordKit locally (`~/Developer/DiscordKit`, branch `sequoia-fork`), fix the 3 errors, point Swiftcord at it as a local package
 - [x] Remove duplicate/orphaned package refs in the .xcodeproj, plus the stale "Swiftcord (App Store)" target
       (2× DiscordKit, 2× Lottie, 2× CachedAsyncImage)
-- [ ] Fix app-side breakage from DiscordKitCore API changes (unknown until Xcode compiles;
-      e.g. readState now uses `ackMessageID` instead of `last_message_id`)
+- [x] Fix app-side breakage from DiscordKitCore API changes (typed image assets, tolerant
+      per-item decoding, immutable Message, read state `ackMessageID`, Xcode 16 SDK ambiguities)
+- [x] **First successful build + launch (2026-10-08)**
 - [x] Clear `DEVELOPMENT_TEAM`, sign "Sign to Run Locally"
 - [x] Deployment target raised 12.0 → 14.0
 - [x] Change bundle ID (e.g. `io.cryptoalgo.swiftcord.sequoia`) so it doesn't clash with the v2 app
@@ -51,6 +52,16 @@ Biggest wins, in order:
 5. **Images decoded full-size on the main thread** (`CachedAsyncImage`). Replace with
    an ImageIO downsampling loader + memory/disk cache sized to the view.
 6. **Unbounded message arrays.** Trim history when scrolled far away.
+
+## Phase 3b — Battery & multitasking (informed by inspecting the v2 bundle's linked libraries)
+v2 is a Mac Catalyst app (UIKit), so none of its code is portable; these are independent implementations.
+- [ ] Replace CachedAsyncImage + SwiftyGif with SDWebImage (v2 uses it): background decode,
+      memory+disk cache, thumbnail downsampling, animated GIF/WebP that pauses offscreen
+- [ ] Pause GIFs / Lottie / typing animations when the window is hidden, minimized or occluded
+- [ ] Unsubscribe from presence/typing churn while backgrounded; coalesce gateway bursts
+- [ ] `NSSupportsSuddenTermination` / automatic termination (v2 sets both)
+- [ ] Purge image memory cache on background / memory pressure
+- [ ] Cache derived data (guild channel lists, server list sort) instead of recomputing per render
 
 ## Phase 4 — Polish (optional)
 - Bring over DiscordKit features v2 has: reactions, threads, polls, forwards, pins

@@ -25,12 +25,12 @@ struct MiniUserProfileView<RichContentSlot: View>: View {
 	@Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-		let avatarURL = user.avatarURL()
+		let avatarURL = user.avatarURL(size: 160)
 		let presence = gateway.presences[user.id]
 
 		VStack(alignment: .leading, spacing: 0) {
-			if let banner = user.banner {
-				let url = banner.bannerURL(of: user.id, size: 600)
+			if let banner = user.bannerAsset {
+				let url = banner.url(with: .webp, size: 600)
 				Group {
 					if url.isAnimatable {
 						SwiftyGifView(url: url.modifyingPathExtension("gif"))

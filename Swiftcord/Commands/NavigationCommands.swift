@@ -44,7 +44,7 @@ struct NavigationCommands: Commands {
 			Divider()
 
 			Button("Previous Channel") {
-				if let channels = state.serverCtx.guild?.channels {
+				if let channels = state.serverCtx.guild?.channelList {
 					let sortedChannels = sortChannels(channels)
 
 					guard let previousChannel = sortedChannels.before(state.serverCtx.channel!, loop: true) else { return }
@@ -54,7 +54,7 @@ struct NavigationCommands: Commands {
 			}.keyboardShortcut(.upArrow, modifiers: [.option])
 
 			Button("Next Channel") {
-				if let channels = state.serverCtx.guild?.channels {
+				if let channels = state.serverCtx.guild?.channelList {
 					let sortedChannels = sortChannels(channels)
 
 					guard let nextChannel = sortedChannels.after(state.serverCtx.channel!, loop: true) else { return }

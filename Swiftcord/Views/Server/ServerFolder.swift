@@ -89,7 +89,7 @@ struct ServerFolder: View {
                             ServerButton(
                                 selected: selectedGuildID == guild.id || loadingGuildID == guild.id,
                                 name: guild.properties.name,
-                                serverIconURL: guild.properties.icon != nil ? "\(DiscordKitConfig.default.cdnURL)icons/\(guild.id)/\(guild.properties.icon!).webp?size=240" : nil,
+                                serverIconURL: guild.properties.iconAsset?.url(with: .webp, size: 240).absoluteString,
                                 isLoading: loadingGuildID == guild.id
                             ) {
                                 selectedGuildID = guild.id
@@ -174,7 +174,7 @@ struct MiniServerThumb: View {
     let animate: Bool
 
     var body: some View {
-        if let serverIconPath = guild.properties.icon, let iconURL = URL(string: "\(DiscordKitConfig.default.cdnURL)icons/\(guild.id)/\(serverIconPath).webp?size=240") {
+        if let iconURL = guild.properties.iconAsset?.url(with: .webp, size: 240) {
             if iconURL.isAnimatable {
                 SwiftyGifView(
                     url: iconURL.modifyingPathExtension("gif"),

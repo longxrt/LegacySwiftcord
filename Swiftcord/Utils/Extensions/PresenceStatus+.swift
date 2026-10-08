@@ -16,6 +16,8 @@ extension PresenceStatus {
 		case .dnd: return "user.presence.dnd"
 		case .offline: return "user.presence.offline"
 		case .invisible: return "user.presence.invisible"
+		case .streaming: return "Streaming"
+		case .unknown: return "user.presence.offline"
 		}
 	}
 }

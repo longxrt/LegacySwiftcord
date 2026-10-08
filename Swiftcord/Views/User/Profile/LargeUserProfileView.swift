@@ -56,7 +56,7 @@ struct LargeUserProfile<Content: View>: View {
 								Image(badge).frame(width: 22, height: 22)
 							}
                         }
-                        if user.premium {
+                        if let premium = user.premium_type, premium != .none {
                             Image("NitroSubscriber").frame(width: 22, height: 22)
                         }
                     }.frame(height: 24)
