@@ -24,6 +24,7 @@ struct UserAvatarView: View {
 	@State private var member: Member?
     @State private var infoPresenting = false
 	@State private var loadFullFailed = false
+	@State private var loadingProfile = false
 	@State private var note = ""
 
 	@EnvironmentObject var ctx: ServerContext
@@ -53,13 +54,18 @@ struct UserAvatarView: View {
 				gateway.requestPresence(id: guildID, memberID: user.id)
 			}
 
-			// Get user profile for a fuller User object and roles
-			if member == nil || fullUser == nil, webhookID == nil, guildID != "@me" {
+			// Get user profile for a fuller User object and roles. In DMs there are no guild
+			// roles, but the profile still has the banner and bio.
+			let isGuild = guildID != nil && guildID != "@me"
+			if fullUser == nil || (isGuild && member == nil), webhookID == nil, !loadingProfile {
+				loadingProfile = true
+				loadFullFailed = false
 				Task {
+					defer { loadingProfile = false }
 					do {
 						let profile = try await restAPI.getProfile(
 							user: user.id,
-							guildID: guildID == "@me" ? nil : guildID
+							guildID: isGuild ? guildID : nil
 						)
 						member = profile.guild_member
 						fullUser = profile.user
@@ -83,7 +89,7 @@ struct UserAvatarView: View {
 				isWebhook: webhookID != nil,
 				loadError: loadFullFailed
 			) {
-				if member == nil, !loadFullFailed {
+				if loadingProfile {
 					ProgressView("Loading full profile...")
 						.progressViewStyle(.linear)
 						.frame(maxWidth: .infinity)
@@ -121,7 +127,7 @@ struct UserAvatarView: View {
 					}
 
 					Text(
-						member == nil
+						member == nil && loadingProfile
 						? "user.roles.loading"
 						: (roles.isEmpty ? "user.roles.none" : (roles.count == 1 ? "user.roles.one" : "user.roles.many"))
 					)

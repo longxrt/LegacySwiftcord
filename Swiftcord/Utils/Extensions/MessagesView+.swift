@@ -47,6 +47,8 @@ internal extension MessagesView {
 			}
 			state.loadingState = .messageLoad
 			try Task.checkCancellation()
+			// Never mix in messages from a channel the user has since left
+			guard ctx.channel?.id == channel.id else { return }
 
 			viewModel.reachedTop = newMessages.count < 50
 			// Skip individual messages that failed to decode instead of dropping the whole page

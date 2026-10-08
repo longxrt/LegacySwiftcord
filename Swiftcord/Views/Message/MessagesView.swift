@@ -9,7 +9,6 @@ import SwiftUI
 import DiscordKit
 import DiscordKitCore
 import SDWebImageSwiftUI
-import Introspect
 import Combine
 
 extension View {
@@ -159,6 +158,20 @@ private struct ComposerField: View {
     }
 }
 
+/// Opens scrolled to the bottom and, on macOS 15+, keeps the bottom pinned while content
+/// grows, so newly loaded older messages above don't move what's on screen.
+private struct BottomAnchoredScroll: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 15, *) {
+            content
+                .defaultScrollAnchor(.bottom, for: .initialOffset)
+                .defaultScrollAnchor(.bottom, for: .sizeChanges)
+        } else {
+            content.defaultScrollAnchor(.bottom)
+        }
+    }
+}
+
 struct MessagesView: View {
     @EnvironmentObject var gateway: DiscordGateway
     @EnvironmentObject var state: UIState
@@ -206,71 +219,79 @@ struct MessagesView: View {
             highlightMsgId: $viewModel.highlightMsg
         )
         .equatable()
-        .listRowBackground(msg.mentions(gateway.cache.user?.id) ? Color.orange.opacity(0.1) : .clear)
+        .background(msg.mentions(gateway.cache.user?.id) ? Color.orange.opacity(0.1) : .clear)
     }
 
-    private var history: some View {
-        ForEach(Array(viewModel.messages.enumerated()), id: \.1.id) { (idx, msg) in
-            let isLastItem = idx == viewModel.messages.count-1
-            let shrunk = !isLastItem && msg.messageIsShrunk(prev: viewModel.messages[idx+1])
+    /// A message and the one before it. Rows get these values directly rather than an
+    /// index, since a lazy stack may build a row after the array has changed.
+    private struct HistoryEntry: Identifiable {
+        let msg: Message
+        let older: Message?
+        var id: Snowflake { msg.id }
+    }
 
-            cell(for: msg, shrunk: shrunk)
-
-            if !isLastItem, let channelID = ctx.channel?.id {
-                let newMsg = gateway.readState[channelID]?.ackMessageID == viewModel.messages[idx+1].id
-
-                if newMsg { UnreadDivider() }
-                if !shrunk && !newMsg {
-                    Spacer(minLength: 16 - MessageView.lineSpacing / 2)
-                }
-            }
-
-            if isLastItem && viewModel.reachedTop || !isLastItem && !msg.timestamp.isSameDay(as: viewModel.messages[idx+1].timestamp) {
-                DayDividerView(date: msg.timestamp)
-            }
+    /// History entries in top-to-bottom (oldest-first) order. `viewModel.messages` is newest-first.
+    private var historyEntries: [HistoryEntry] {
+        let messages = viewModel.messages
+        return messages.indices.reversed().map { idx in
+            HistoryEntry(msg: messages[idx], older: idx + 1 < messages.count ? messages[idx + 1] : nil)
         }
-        .zeroRowInsets()
-        .fixedSize(horizontal: false, vertical: true)
     }
 
+    /// One message plus the dividers shown above it, in top-to-bottom order
     @ViewBuilder
-    private var historyList: some View {
-        ScrollViewReader { proxy in
-            List {
-                Spacer(minLength: max(messageInputHeight-44-7, 0) + (viewModel.showingInfoBar ? 24 : 0)).zeroRowInsets()
+    private func historyItem(_ entry: HistoryEntry) -> some View {
+        let msg = entry.msg
+        let older = entry.older
+        let shrunk = older.map { msg.messageIsShrunk(prev: $0) } ?? false
 
-                history.flip().removeSeparator()
+        if let older {
+            if !msg.timestamp.isSameDay(as: older.timestamp) { DayDividerView(date: msg.timestamp) }
+            let isFirstUnread = ctx.channel.flatMap { gateway.readState[$0.id]?.ackMessageID } == older.id
+            if isFirstUnread {
+                UnreadDivider()
+            } else if !shrunk {
+                Spacer(minLength: 16 - MessageView.lineSpacing / 2)
+            }
+        } else if viewModel.reachedTop {
+            DayDividerView(date: msg.timestamp)
+        }
+
+        cell(for: msg, shrunk: shrunk)
+    }
+
+    // A plain top-to-bottom scroll view that starts at (and stays pinned to) the bottom.
+    // This replaces a List that was rotated 180° in AppKit and flipped back in SwiftUI,
+    // which broke hit testing on macOS 15 so avatars and other buttons in messages
+    // couldn't be clicked.
+    private var historyList: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0) {
+                Spacer(minLength: 52) // Keep the top of history clear of the toolbar
 
                 if viewModel.reachedTop {
-                    MessagesViewHeader(chl: ctx.channel).zeroRowInsets().removeSeparator().flip()
+                    MessagesViewHeader(chl: ctx.channel)
                 } else {
+                    // Don't cancel the fetch when this scrolls away: switching channels rebuilds the
+                    // scroll view, and its disappear can land after the new channel's fetch started.
+                    // Fetches for a previous channel are cancelled by fetchMoreMessages() instead.
                     loadingSkeleton
-                        .zeroRowInsets()
-                        .flip()
-                        .removeSeparator()
                         .onAppear { if viewModel.fetchMessagesTask == nil { fetchMoreMessages() } }
-                        .onDisappear {
-                            if let loadTask = viewModel.fetchMessagesTask {
-                                loadTask.cancel()
-                                viewModel.fetchMessagesTask = nil
-                            }
-                        }
                 }
 
-                Spacer(minLength: 52).zeroRowInsets() // Ensure content is fully visible and not hidden behind toolbar when scrolled to the top
+                ForEach(historyEntries) { entry in
+                    historyItem(entry)
+                }
+
+                Spacer(minLength: max(messageInputHeight - 44 - 7, 0) + (viewModel.showingInfoBar ? 24 : 0))
             }
-            .introspectTableView { tableView in
-                tableView.backgroundColor = .clear
-                tableView.enclosingScrollView!.drawsBackground = false
-                tableView.enclosingScrollView!.rotate(byDegrees: 180)
-                tableView.enclosingScrollView!.scrollerInsets = NSEdgeInsets(top: 0, left: 0, bottom: 52, right: 0)
-            }
-            .environment(\.defaultMinListRowHeight, 1) // By SwiftUI's logic, 0 is negative so we use 1 instead
-            .scaleEffect(x: -1, y: 1, anchor: .center)
-            .background(.clear)
-            .frame(maxHeight: .infinity)
-            .padding(.bottom, 24 + 7) // Ensure List doesn't go below text input field (and its border radius)
+            .padding(.horizontal, 10)
         }
+        .id(ctx.channel?.id) // A fresh scroll view per channel, so each one opens at the newest message
+        .modifier(BottomAnchoredScroll())
+        .contentMargins(.top, 52, for: .scrollIndicators)
+        .frame(maxHeight: .infinity)
+        .padding(.bottom, 24 + 7) // Ensure history doesn't go below text input field (and its border radius)
     }
 
     @ViewBuilder
