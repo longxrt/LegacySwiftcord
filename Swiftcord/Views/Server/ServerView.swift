@@ -155,6 +155,7 @@ struct ServerView: View {
                 }
 				if let user = gateway.cache.user { CurrentUserFooter(user: user) }
             }
+            .themedBackground(Color.clear)
 
             // MARK: Message History
             if serverCtx.channel != nil, serverCtx.guild != nil {
@@ -173,7 +174,7 @@ struct ServerView: View {
 				}
 				.padding()
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.background(.gray.opacity(0.15))
+				.themedBackground(.gray.opacity(0.15))
 			}
         }
 		.environmentObject(serverCtx)

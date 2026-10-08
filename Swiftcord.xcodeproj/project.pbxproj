@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		087D3966493577265DD52827 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A2D227B56E6D12A2A3646 /* Theme.swift */; };
 		03A188BE2A0FDB7500D5F4BC /* BasicStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A188BD2A0FDB7500D5F4BC /* BasicStickerView.swift */; };
 		03A188C02A0FDB8A00D5F4BC /* MessageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A188BF2A0FDB8A00D5F4BC /* MessageStickerView.swift */; };
 		13A79FC0298C41C800D19AAB /* View+KeyDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A79FBF298C41C800D19AAB /* View+KeyDown.swift */; };
@@ -138,6 +139,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EC6A2D227B56E6D12A2A3646 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		03A188BD2A0FDB7500D5F4BC /* BasicStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStickerView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		03A188BF2A0FDB8A00D5F4BC /* MessageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStickerView.swift; sourceTree = "<group>"; };
 		13A79FBF298C41C800D19AAB /* View+KeyDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+KeyDown.swift"; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 		DA4A88DC27C3272500720909 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				EC6A2D227B56E6D12A2A3646 /* Theme.swift */,
 				DAB53663285ACEBB00DD9857 /* GitHub */,
 				DA520AE327D76BF8009FD740 /* Extensions */,
 				DA520AC127D37863009FD740 /* MergeStructs */,
@@ -864,6 +867,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				087D3966493577265DD52827 /* Theme.swift in Sources */,
 				DAB53662285A272D00DD9857 /* OnboardingView.swift in Sources */,
 				DA520ACB27D4A23A009FD740 /* String+.swift in Sources */,
 				DA57F44428056718001DC46E /* ChannelList.swift in Sources */,

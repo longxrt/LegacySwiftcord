@@ -206,7 +206,7 @@ struct CurrentUserFooter: View {
 		}
 		.frame(height: 52)
 		.padding(.horizontal, 8)
-		.background(Color(nsColor: .controlBackgroundColor.withAlphaComponent(0.5)))
+		.themedBackground(Color(nsColor: .controlBackgroundColor.withAlphaComponent(0.5)), oled: OLEDPalette.surface)
 		.sheet(isPresented: $switcherPresented) {
 			accountSwitcher()
 		}

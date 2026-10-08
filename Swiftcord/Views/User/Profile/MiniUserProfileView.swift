@@ -23,6 +23,7 @@ struct MiniUserProfileView<RichContentSlot: View>: View {
 
 	@EnvironmentObject var gateway: DiscordGateway
 	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.isOLED) private var isOLED
 
     var body: some View {
 		let avatarURL = user.avatarURL(size: 160)
@@ -136,11 +137,12 @@ struct MiniUserProfileView<RichContentSlot: View>: View {
 			.padding(12)
 			.background(
 				RoundedRectangle(cornerRadius: 4, style: .continuous)
-					.fill(colorScheme == .dark ? .black.opacity(0.45) : .white.opacity(0.45))
+					.fill(isOLED ? OLEDPalette.elevated : (colorScheme == .dark ? .black.opacity(0.45) : .white.opacity(0.45)))
 			)
 			.padding(14)
 		}
 		.frame(width: 300)
+		.themedBackground(Color.clear)
 	}
 }
 

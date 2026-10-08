@@ -108,7 +108,7 @@ struct LoadingView: View {
         .ignoresSafeArea()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .allowsHitTesting(loading)
-        .background(Color(NSColor.windowBackgroundColor))
+        .themedBackground(Color(NSColor.windowBackgroundColor))
 		.opacity(loading ? 1 : 0)
         .scaleEffect(loading ? 1 : 2)
         .animation(.interpolatingSpring(stiffness: 200, damping: 120), value: loading)

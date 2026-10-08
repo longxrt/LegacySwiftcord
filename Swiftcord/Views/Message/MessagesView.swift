@@ -325,9 +325,10 @@ struct MessagesView: View {
                 Divider().frame(maxWidth: .infinity)
             }
             .frame(maxWidth: .infinity)
-            .background(.ultraThinMaterial)
+            .themedBackground(.ultraThinMaterial)
         }
         .frame(minWidth: 525, minHeight: 500)
+        .themedBackground(Color.clear)
         // .blur(radius: viewModel.dropOver ? 8 : 0)
         .overlay {
             if viewModel.dropOver {

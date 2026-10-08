@@ -28,7 +28,8 @@ struct SwiftcordApp: App {
 	@StateObject private var state = UIState()
 	@StateObject private var acctManager = AccountSwitcher()
 
-	@AppStorage("theme") private var selectedTheme = "system"
+	@AppStorage(AppTheme.storageKey) private var selectedTheme = AppTheme.system.rawValue
+	private var theme: AppTheme { AppTheme(rawValue: selectedTheme) ?? .system }
 
 	private static let log = Logger(category: "MainApp")
 
@@ -40,6 +41,7 @@ struct SwiftcordApp: App {
 					.environmentObject(state)
 					.environmentObject(acctManager)
 					.navigationTitle("Login")
+					.appTheme(theme)
 			} else {
 				ContentView()
 					.overlay(LoadingView())
@@ -48,11 +50,7 @@ struct SwiftcordApp: App {
 					.environmentObject(acctManager)
 				// .environment(\.locale, .init(identifier: "zh-Hans"))
 				// .environment(\.managedObjectContext, persistenceController.container.viewContext)
-					.preferredColorScheme(
-						selectedTheme == "dark"
-						? .dark
-						: (selectedTheme == "light" ? .light : nil)
-					)
+					.appTheme(theme)
 					.onAppear {
 						// Fix list assertion errors
 						// The window has been marked as needing another Update Constraints in Window pass, but it has already had more Update Constraints in Window passes than there are views in the window.
@@ -99,11 +97,7 @@ struct SwiftcordApp: App {
 				.environmentObject(gateway)
 				.environmentObject(state)
 				.environmentObject(acctManager)
-				.preferredColorScheme(
-					selectedTheme == "dark"
-					? .dark
-					: (selectedTheme == "light" ? .light : .none)
-				)
+				.appTheme(theme)
 		}
 	}
 }

@@ -24,6 +24,7 @@ struct ContentView: View {
     @EnvironmentObject var gateway: DiscordGateway
     @EnvironmentObject var state: UIState
     @EnvironmentObject var accountsManager: AccountSwitcher
+    @Environment(\.isOLED) private var isOLED
 
     @AppStorage("local.seenOnboarding") private var seenOnboarding = false
     @AppStorage("local.previousBuild") private var prevBuild: String?
@@ -138,9 +139,13 @@ struct ContentView: View {
                 .frame(width: 72)
             }
             .frame(maxHeight: .infinity, alignment: .top)
-            .background(VisualEffect()
-                .overlay(Color(nsColor: NSColor.controlBackgroundColor).opacity(0.5))
-            )
+            .background {
+                if isOLED {
+                    OLEDPalette.background
+                } else {
+                    VisualEffect().overlay(Color(nsColor: NSColor.controlBackgroundColor).opacity(0.5))
+                }
+            }
 
             ServerView(
                 guild: state.selectedGuildID == nil

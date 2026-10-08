@@ -52,7 +52,7 @@ struct MessageInputReplyView: View {
 			.fixedSize(horizontal: false, vertical: true)
 			.padding(.horizontal, 16)
 			.padding(.vertical, 8)
-			.background(Color(nsColor: .controlBackgroundColor).opacity(0.3))
+			.themedBackground(Color(nsColor: .controlBackgroundColor).opacity(0.3), oled: OLEDPalette.surface)
 		}
     }
 }

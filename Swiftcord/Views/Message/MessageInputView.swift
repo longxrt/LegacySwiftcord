@@ -65,6 +65,7 @@ struct MessageInputView: View {
 	@State private var showingAttachmentErr = false
 	@State private var attachmentErr = ""
 	@EnvironmentObject var ctx: ServerContext
+	@Environment(\.isOLED) private var isOLED
 
 	@AppStorage("showSendBtn") private var showSendButton = false
 
@@ -143,10 +144,10 @@ struct MessageInputView: View {
 			.animation(.easeInOut(duration: 0.3), value: showSendButton)
         }
         .frame(minHeight: 40)
-		.background(.regularMaterial)
+		.themedBackground(.regularMaterial, oled: OLEDPalette.surface)
 		.overlay(
 			RoundedRectangle(cornerRadius: 7)
-				.strokeBorder(Color(nsColor: .separatorColor), lineWidth: 1)
+				.strokeBorder(isOLED ? OLEDPalette.border : Color(nsColor: .separatorColor), lineWidth: 1)
 		)
 		.cornerRadius(7)
         .padding(.horizontal, 16)

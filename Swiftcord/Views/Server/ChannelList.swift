@@ -17,6 +17,7 @@ struct ChannelList: View, Equatable {
 	@AppStorage("nsfwShown") var nsfwShown: Bool = true
 	@EnvironmentObject var serverCtx: ServerContext
 	@EnvironmentObject var gateway: DiscordGateway
+	@Environment(\.isOLED) private var isOLED
 
 	@_transparent @_optimize(speed) @ViewBuilder
 	private func item(for channel: Channel) -> some View {
@@ -84,6 +85,9 @@ struct ChannelList: View, Equatable {
 		.environment(\.defaultMinListRowHeight, 1)
 		.padding(.horizontal, -6)
 		.listStyle(.sidebar)
+		// Hide the translucent sidebar material in the OLED theme
+		.scrollContentBackground(isOLED ? .hidden : .automatic)
+		.themedBackground(Color.clear)
 		.frame(minWidth: 240, maxHeight: .infinity)
 		.introspectTableView { tableView in
 			tableView.enclosingScrollView!.scrollerInsets = .init(top: 0, left: 0, bottom: 0, right: 6)

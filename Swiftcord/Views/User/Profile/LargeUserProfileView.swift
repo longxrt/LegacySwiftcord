@@ -71,7 +71,7 @@ struct LargeUserProfile<Content: View>: View {
                 .padding(16)
         }
         .frame(maxWidth: .infinity)
-        .background(Color(NSColor.controlBackgroundColor))
+        .themedBackground(Color(NSColor.controlBackgroundColor), oled: OLEDPalette.elevated)
         .cornerRadius(12)
     }
 }
