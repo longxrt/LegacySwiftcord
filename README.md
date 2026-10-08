@@ -1,187 +1,158 @@
-<p align=center><image src="https://raw.githubusercontent.com/SwiftcordApp/.github/main/res/swiftcord_new_icon.png" height="256" /></p>
+# Swiftcord Sequoia Edition
 
-<h1 align="center">Swiftcord</h1>
+A maintained fork of **legacy Swiftcord**, the open-source native SwiftUI Discord client for macOS,
+updated to run well on **macOS 14 Sonoma and macOS 15 Sequoia**.
 
-<p align="center">
-  <a aria-label="Join the community on Discord" href="https://discord.gg/he7n6MGDXS" target="_blank">
-    <img alt="" src="https://img.shields.io/discord/964741354112577557?style=for-the-badge&labelColor=black&label=Join%20Server&logo=Discord">
-  </a>
+The official Swiftcord v2 requires macOS 26 Tahoe and isn't open source. This branch starts from
+the archived legacy codebase (v0.7.0, last updated November 2023) and modernizes it: it builds
+against today's Discord API library, fixes what broke, and is optimized for speed, battery life and
+privacy.
 
-  <!-- Self-hosted tokei_rs instance, only works for repos in the SwiftcordApp org -->
-  <img alt="" src="http://vinkwok.mywire.org/tokei/github/SwiftcordApp/Swiftcord?style=for-the-badge&category=code">
-  
-  <a aria-label="Download" href="https://github.com/SwiftcordApp/Swiftcord/releases/latest">
-    <img alt="" src="https://img.shields.io/github/v/release/cryptoAlgorithm/Swiftcord?style=for-the-badge&labelColor=black&color=eb563c&label=Download">
-  </a>
-</p>
-
-<p align="center">Native Discord client for macOS built in Swift</p>
-
-> [!WARNING]
-> I have fully moved my development time and attention to the next generation of Swiftcord, which means I will not be
-> frequently monitoring this repository and its issues. Read [this discussion](https://github.com/SwiftcordApp/Swiftcord/discussions/189) to find out more!
->
-> We are very near to release, and I can't wait to let everyone experience the future of Swiftcord!
-
-[![](https://github.com/SwiftcordApp/.github/blob/main/res/hero.webp?raw=true)](https://github.com/SwiftcordApp/.github/blob/main/res/swiftcord-promo.mov?raw=true)
-###### This image doesn't animate properly in Safari, unfortunately. Click on it to view the original video.
-
-[![Weblate project translated](https://img.shields.io/weblate/progress/swiftcord?style=for-the-badge)](https://hosted.weblate.org/projects/swiftcord/swiftcord/)
+> **Branch:** `sequoia-legacy` · **Based on:** upstream `main` (legacy) · **License:** GPL-3.0, same as upstream
 
 ---
 
-Swiftcord is beautiful, follows design principals of the official client while keeping the macOS look and feel that you love, and most importantly, its (really) fast!
+## At a glance
 
-Powered by [DiscordKit](https://github.com/SwiftcordApp/DiscordKit), a Swift Discord implementation built
-from the ground up.
+| | Legacy Swiftcord | This branch |
+|---|---|---|
+| Discord library (DiscordKit) | October 2023 | September 2026 (+77 upstream commits, plus fixes) |
+| Builds with Xcode 16 / macOS 15 SDK | No | Yes |
+| Server channels | Often fail with "Missing Access" | Load reliably |
+| Clicking avatars or buttons in messages | Broken on macOS 15 | Works |
+| Analytics and crash reporting | Sentry (always on in release) + AppCenter | None |
+| Discord tracking on the login page | Runs | Blocked |
+| Animated GIF timer | Runs for the whole session at display refresh rate, even when hidden | Only while an animation is visible |
+| UI redraws from other users' status changes | Every event, all views | Batched: once/s, 5 s in background, 60 s when hidden |
+| OLED Black theme | No | Yes |
+| Activity status (games, Apple Music, Spotify, Cider) | No | Yes, opt-in |
+| Full user profiles | No | Yes |
 
-**If you like this project, please smash the star button and be one of my stargazers 🌟! It motivates
-me to continue investing time into Swiftcord.**
-
-## Supporters
-Supporters get feature releases 2 weeks before they are made public! 
-
-**Be a supporter to support me and this project's future! Perfect if you'd like to contribute but don't 
-have the skills or time required! It's a great way of thanking me for my work. I'll be eternally grateful!**
-
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/cryptoAlgorithm?label=Sponsor%20Me!&logo=buymeacoffee&style=for-the-badge)](https://github.com/sponsors/cryptoAlgorithm)
-[![Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dcryptoalgo%26type%3Dpatrons&style=for-the-badge)](https://www.patreon.com/cryptoAlgo)
-
-<!--<table>
-  <tr>
-    <td>
-      <img src="" width=100 height=100/>
-    </td>
-    <td>
-      <strong></strong>
-      <br>
-      <a href=""></a>
-      <br><br>
-      <i></i>
-    </td>
-  </tr>
-</table>-->
-
-<!--### Amazing Supporter 🤯-->
-<!--<table>
-  <tr>
-    <td>
-      <img src="" width=36 height=36/>
-    </td>
-    <td>
-      <code><strong></strong></code> - First amazing supporter!
-    </td>
-  </tr>
-</table>-->
-
-<!--### Extremely Cool Supporter 🧊-->
-
-## Contents
-* [Motivation](#motivation)
-* [Releases](#releases)
-* [FAQ](#faq)
-* [Roadmap](#roadmap)
-* [Copyright Notice](#copyright-notice)
+Measured on a Release build after startup, idle on an Apple Silicon Mac: **about 0–2 % CPU,
+roughly one wakeup every two seconds, about 130 MB of memory.** These are single measurements,
+not a formal benchmark against legacy.
 
 ---
 
-## Motivation
+## Where it's optimized
 
-Swiftcord was created to offer a Discord-like UI and experience while
-having the performance and memory benefits of native apps. The idea started
-brewing when I was tight on RAM, then noticed Discord using 600+MB of RAM.
-I then realized that was the perfect opportunity to explore SwiftUI,
-since it was relatively new to me at that time. Hence, Swiftcord was born!
+### Responsiveness
 
----
+- **No more whole-window redraws on every Discord event.** Every view observes the shared gateway
+  object, and legacy sent a change notification after *every* incoming event, while each presence
+  update (someone going online/idle/offline) triggered another. In busy servers that's a constant
+  stream. Changes are now coalesced: cache changes are merged into one update per run-loop turn,
+  and other users' presence changes are batched (see *Battery* below).
+  *(`DiscordKit`: `DiscordGateway.swift`)*
+- **Faster startup.** The initial presence list (often thousands of entries) was inserted one at a
+  time into a published dictionary, notifying observers for each. It's now merged in one pass.
+- **Typing no longer redraws the chat history.** The draft text lived in the same model as the
+  message list, so every keystroke invalidated the whole history. The composer now has its own
+  model observed only by the text field. *(`MessagesViewModel.swift`, `MessagesView.swift`)*
+- **Cheaper message rendering.** Reply previews used to scan the entire loaded history for each
+  reply on every render (quadratic). They now use the replied-to message Discord already sends.
+- **Cheaper server list.** Working out which servers sit outside folders was
+  servers × folders × folder size on every redraw; it's now a single set lookup.
+- **New message list.** The chat history was a `List` rotated 180° in AppKit and flipped back in
+  SwiftUI. It's now a lazy, bottom-anchored `ScrollView` that keeps your place when older messages
+  load (macOS 15). This also fixed click handling (see *Reliability*).
 
-## Releases
+### Battery and multitasking
 
-You'll need **macOS Monterey and above (>= 12.0)** to run Swiftcord.
-Releases from the channels below are universal bundles, and run natively on
-both Apple Silicon and Intel.
+- **Removed a permanent refresh-rate timer.** Legacy's GIF library (SwiftyGif) starts a
+  `CVDisplayLink` when the first animated image appears and never stops it, waking the app 60–120
+  times a second for the rest of the session, even when minimized. Animated images now use
+  SDWebImage, which only runs a display link while something is actually playing.
+- **Animations pause when nobody can see them.** GIFs, animated avatars, stickers and the typing
+  indicator stop when their window is minimized, hidden, on another Space, fully covered, or the
+  display is off, and when they scroll out of view. *(`WindowVisibility.swift`)*
+- **Background-aware updates.** Other users' presence changes redraw at most once a second while
+  Swiftcord is frontmost, every 5 seconds when it's behind other apps, and every 60 seconds when
+  it's hidden. Returning to the app applies anything pending immediately.
+  *(`AppActivityMonitor.swift`)*
+- **Memory pressure handling.** When macOS reports memory pressure, in-memory image caches are
+  released (the disk cache is kept).
+- **Bounded caches.** Images are cached by SDWebImage with limits (96 MB in memory, 384 MB / 1 week
+  on disk), decoded off the main thread. The old URL cache now only holds API responses.
+- **Sudden termination.** macOS can quit the app instantly at logout or shutdown.
 
-### Nightly Builds (Latest fixes/features, built from the latest commit on `main`, might be unstable)
-[![Download latest nightly build](https://img.shields.io/github/actions/workflow/status/SwiftcordApp/Swiftcord/build.yaml.svg?style=for-the-badge)](https://nightly.link/SwiftcordApp/Swiftcord/workflows/build.yaml/main/swiftcord-canary.zip)
+### Reliability
 
-For the latest features and fixes, [a pre-built version of the latest commit is available here](https://nightly.link/SwiftcordApp/Swiftcord/workflows/main/main/Swiftcord_Canary.zip)
+- **Up-to-date Discord library.** DiscordKit is updated from October 2023 to September 2026,
+  including tolerant decoding: one malformed message or channel is skipped instead of failing the
+  whole page. A small fork fixes the gateway module for the current core library.
+- **Server channels load.** Discord sends hidden channels too; legacy picked a channel before
+  computing permissions and often opened one you can't see. Channels are now filtered by your
+  permissions, using Discord's rule that role allows win over role denies.
+- **New message types don't vanish.** Messages using newer layouts (common with bots) failed to
+  decode and were dropped entirely. Unknown component types are now tolerated.
+- **Messages and buttons are clickable again.** On macOS 15, clicks inside the old flipped list
+  landed at the mirrored position, so avatars and attachments couldn't be clicked.
+- **Crash fixes** for empty DM recipient lists (deleted accounts), group-add messages with no
+  mentions, the Credits page, and the media player.
+- **Messages go to the right channel.** Sending captured the channel when the request ran, so a
+  quick channel switch could send to the wrong one.
+- **Your typing indicator works.** Legacy compared the new draft with itself, so "is typing…" was
+  never sent.
+- **Unread markers** read Discord's current read-state field.
 
-### Alpha (More stable, less updated)
-[![Download latest GitHub release](https://img.shields.io/github/v/release/cryptoAlgorithm/Swiftcord?style=for-the-badge)](https://github.com/cryptoAlgorithm/Swiftcord/releases/)
+### Privacy
 
-Alpha releases are available at [GitHub Releases](https://github.com/cryptoAlgorithm/Swiftcord/releases/)
-
-### Homebrew
-[![homebrew cask](https://img.shields.io/homebrew/cask/v/swiftcord?style=for-the-badge)](https://formulae.brew.sh/cask/swiftcord)
-
-Swiftcord is also available on homebrew as a cask: `brew install swiftcord`. Versions are
-lock stepped with GitHub releases.
-
-### TestFlight
-
-Coming soon!
-
-<!-- todo: Add building from source -->
-
----
-
-## FAQ
-
-Covers a few common questions I have encountered, click on the question
-to expand the answer
-
-<details>
-  <summary><b>Will I get banned for using Swiftcord/Is using Swiftcord illegal?</b></summary>
-    Nobody really knows what Discord's official stance on unofficial clients is. 
-    However, hundreds of people and I have been using Swiftcord for quite a while, 
-    and nobody has been banned to date.
-  <i>
-    I do not take any responsibility for account bans due to the use of Swiftcord,
-    whether direct or indirect, although there's a very low possibility of that occurring. 
-    I recommend trying Swiftcord with an alt if possible.
-  </i>
-</details>
-<details>
-  <summary><b>Feature <i>x</i> is missing! When will <i>y</i> be implemented?</b></summary>
-  Swiftcord currently is in the alpha stage, and hasn't achieved feature
-  parity with the official Discord client yet (it's quite far behind). 
-  Many features are planned, but I do not currently have a timeline for them. 
-  Development is progressing at a fast pace, but sometimes bugs may take an unexpectedly long time to fix.
-  I appreciate contributions, bug reports, and suggestions :)
-</details>
-<details>
-  <summary><b>Swiftcord just crashed!</b></summary>
-  Although I'm aiming for 0 crashes (which is made easier by Swift),
-  sometimes the unexpected happens xD. If you experience a crash, please
-  open an issue with appropriate information like the line the error
-  occurs on, relevant logs, and what you were doing that might have caused
-  the crash. If you can solve the bug causing the crash, that's even better!
-</details>
-
----
-
-## Roadmap
-Take a look at Swiftcord's [GitHub Projects board](https://github.com/orgs/SwiftcordApp/projects/1)
-to get a rough idea of what's brewing!
+- **Removed** Sentry crash reporting (enabled in every release build regardless of settings),
+  AppCenter analytics, and the Sparkle updater (which pointed at the upstream feed).
+- **Login page tracking blocked.** Login uses Discord's own web page, which runs Discord's
+  analytics. A content-blocking rule list now blocks `/science`, `/metrics`, `/track`, Discord's
+  Sentry relay and `sentry.io` before the page loads. Login, two-factor, QR login and captcha are
+  unaffected.
+- The client itself never calls Discord's analytics endpoints. It still sends Discord's standard
+  client-identity header, as every official client does; removing it is a known way to get
+  accounts flagged.
 
 ---
 
-## Copyright Notice
+## New features
 
-Copyright (c) 2023 Vincent Kwok & Swiftcord Contributors
+- **OLED Black theme** (Settings → App → Appearance): pure black backgrounds throughout, with
+  near-black surfaces for raised elements.
+- **Activity Status** (Settings → App → Activity Status, off by default): show the game you're
+  playing and the music you're listening to on your profile.
+  - Games are detected when apps launch or quit, from their app category or Discord's list of
+    detectable games. No polling.
+  - Apple Music and Spotify via their system notifications (no polling, no permissions).
+  - Cider via its local RPC API, checked only while Cider is running. Optional API token stored in
+    the Keychain.
+- **Full user profiles**: "View Full Profile" from any profile card shows the banner, badges,
+  pronouns, About Me, roles, connected accounts, a private note, and mutual servers and friends.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+---
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+## Building
 
-The above copyright notice, this permission notice, and its license shall be included in all copies or substantial portions of the Software.
+Requires macOS 14 or later and Xcode 16. The project expects the DiscordKit fork in a folder next
+to this repository:
 
-You can find a copy of the GNU General Public License v3 in LICENSE or https://www.gnu.org/licenses/.
+```bash
+git clone -b sequoia-legacy https://github.com/longxrt/Swiftcord.git Swiftcord
+git clone -b sequoia-fork https://github.com/longxrt/DiscordKit.git DiscordKit
+```
 
-I ❤️ Open Source
+The DiscordKit fork is currently a private repository, so these steps only work for its owner.
+
+Then open `Swiftcord/Swiftcord.xcodeproj`, or build and install to `/Applications` with:
+
+```bash
+Swiftcord/Scripts/install.sh
+```
+
+Builds are signed to run locally ("Sign to Run Locally") with their own bundle ID
+(`io.cryptoalgo.swiftcord.sequoia`), so they don't conflict with the official app.
+
+---
+
+## Notes
+
+- Swiftcord logs in with your user account, which Discord's Terms of Service don't permit for
+  third-party clients. The risk is the same as with any official Swiftcord build.
+- All credit for Swiftcord goes to the original Swiftcord contributors. This branch isn't
+  affiliated with or endorsed by the Swiftcord project.
+- Detailed progress notes are in [`SEQUOIA_PLAN.md`](SEQUOIA_PLAN.md).
